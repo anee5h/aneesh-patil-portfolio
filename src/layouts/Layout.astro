@@ -1,5 +1,12 @@
+---
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+
+const locale = Astro.currentLocale ?? 'en';
+---
+
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -17,7 +24,9 @@
 		</script>
 	</head>
 	<body>
+		<Header />
 		<slot />
+		<Footer />
 	</body>
 </html>
 
