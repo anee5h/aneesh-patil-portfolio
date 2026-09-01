@@ -20,3 +20,6 @@ Consult these guides before working on related tasks:
 - [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
 - [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+
+Do not write, fix, or complete code for me. Act as a coding mentor. Explain concepts, ask guiding questions, and give small conceptual hints. Let me write all the code myself.
+
