@@ -1,0 +1,95 @@
+---
+import { IconArrowDown } from '@tabler/icons-astro';
+import { getCopy, type Locale } from '../data/site';
+import Layout from '../layouts/Layout.astro';
+import { getResumeDocuments } from '../lib/resume';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const resumeDocuments = getResumeDocuments(locale);
+---
+
+<Layout title={copy.resumePage.metaTitle} description={copy.resumePage.metaDescription} pagePath="resume" noindex>
+	<main class="resume-page page-shell">
+		<header class="page-intro">
+			<h1>{copy.resumePage.title}</h1>
+			<p>{copy.resumePage.intro}</p>
+		</header>
+
+		{resumeDocuments.length > 0 ? (
+			<section class="download-section" aria-labelledby="downloads-title">
+				<h2 id="downloads-title">{copy.resumePage.downloadsTitle}</h2>
+				<p>{copy.resumePage.downloadsText}</p>
+				<div class="download-links">
+					{resumeDocuments.map((document, index) => (
+						<a class:list={['button-link', { 'button-link--quiet': index > 0 }]} href={document.href} download>
+							{document.label} <IconArrowDown size={16} stroke={1.8} aria-hidden="true" />
+						</a>
+					))}
+				</div>
+			</section>
+		) : (
+			<p class="pending-documents">{copy.resumePage.pendingText}</p>
+		)}
+	</main>
+
+	<style>
+		.resume-page {
+			padding-top: clamp(3rem, 8vw, 6rem);
+		}
+
+		.page-intro {
+			max-width: 46rem;
+			padding-bottom: var(--space-section);
+		}
+
+		.page-intro h1 {
+			margin: 0;
+			font-size: clamp(3rem, 7vw, 5.5rem);
+			letter-spacing: -0.06em;
+			line-height: 0.98;
+		}
+
+		.page-intro > p:last-child {
+			max-width: 38rem;
+			margin: 1.5rem 0 0;
+			font-size: clamp(1.05rem, 2vw, 1.25rem);
+		}
+
+		.download-section {
+			max-width: 48rem;
+			padding: 3rem 0;
+			border-top: 1px solid var(--color-border);
+			border-bottom: 1px solid var(--color-border);
+		}
+
+		.download-section h2 {
+			margin: 0;
+			font-size: clamp(1.7rem, 3vw, 2.5rem);
+			letter-spacing: -0.04em;
+		}
+
+		.download-section p {
+			margin: 0.75rem 0 2rem;
+			color: var(--color-muted);
+		}
+
+	.download-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.pending-documents {
+		max-width: 48rem;
+		padding: 2rem 0;
+		border-top: 1px solid var(--color-border);
+		border-bottom: 1px solid var(--color-border);
+		color: var(--color-muted);
+	}
+	</style>
+</Layout>

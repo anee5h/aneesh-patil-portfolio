@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Meguruto architecture</title>
+  <desc id="desc">A browser client communicates with the React application, Supabase data services, travel and weather APIs, and Cloudflare Pages deployment.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#8c6a36" />
+    </marker>
+    <style>
+      .title { font: 600 28px system-ui, sans-serif; fill: #242424; }
+      .label { font: 600 20px system-ui, sans-serif; fill: #242424; }
+      .detail { font: 400 16px system-ui, sans-serif; fill: #5e5b54; }
+      .box { fill: #f7f6f2; stroke: #c9c1b2; stroke-width: 2; }
+      .primary { fill: #eee7d9; stroke: #a46835; stroke-width: 2; }
+      .external { fill: #e7eee8; stroke: #6e8c75; stroke-width: 2; }
+      .line { stroke: #8c6a36; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1200" height="700" rx="24" fill="#f7f6f2" />
+  <text x="60" y="70" class="title">Meguruto · build-time architecture</text>
+
+  <rect x="70" y="245" width="230" height="130" rx="14" class="box" />
+  <text x="185" y="295" text-anchor="middle" class="label">Browser</text>
+  <text x="185" y="330" text-anchor="middle" class="detail">React interface</text>
+  <text x="185" y="355" text-anchor="middle" class="detail">Maps and trip filters</text>
+
+  <rect x="420" y="190" width="330" height="240" rx="14" class="primary" />
+  <text x="585" y="245" text-anchor="middle" class="label">Application layer</text>
+  <text x="585" y="285" text-anchor="middle" class="detail">React 19 · TypeScript</text>
+  <text x="585" y="313" text-anchor="middle" class="detail">React Router · i18next</text>
+  <text x="585" y="341" text-anchor="middle" class="detail">Leaflet · react-leaflet</text>
+  <text x="585" y="369" text-anchor="middle" class="detail">Recommendation flow</text>
+
+  <rect x="900" y="105" width="230" height="115" rx="14" class="external" />
+  <text x="1015" y="150" text-anchor="middle" class="label">Supabase</text>
+  <text x="1015" y="182" text-anchor="middle" class="detail">Application data</text>
+
+  <rect x="900" y="290" width="230" height="145" rx="14" class="external" />
+  <text x="1015" y="335" text-anchor="middle" class="label">External services</text>
+  <text x="1015" y="367" text-anchor="middle" class="detail">Open-Meteo · Nominatim</text>
+  <text x="1015" y="395" text-anchor="middle" class="detail">Wikipedia data</text>
+
+  <rect x="420" y="535" width="330" height="95" rx="14" class="box" />
+  <text x="585" y="575" text-anchor="middle" class="label">Cloudflare Pages</text>
+  <text x="585" y="605" text-anchor="middle" class="detail">Static deployment</text>
+
+  <path d="M300 310H420" class="line" />
+  <path d="M750 250L900 175" class="line" />
+  <path d="M750 365H900" class="line" />
+  <path d="M585 430V535" class="line" />
+</svg>

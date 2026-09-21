@@ -1,38 +1,74 @@
 ---
-import { getRelativeLocaleUrl } from 'astro:i18n';
+import { IconMoon, IconSun } from '@tabler/icons-astro';
+import { getCopy, type Locale } from '../data/site';
+import { alternateLocalePath, localizedUrl } from '../lib/urls';
 
-const locale = Astro.currentLocale ?? 'en';
+const locale = (Astro.currentLocale ?? 'en') as Locale;
+const copy = getCopy(locale);
+const currentPath = Astro.url.pathname
+	.replace(/^\/(?:en|ja)(?=\/|$)/, '')
+	.replace(/^\/+|\/+$/g, '');
+const projectsUrl = localizedUrl(locale, 'projects');
+const blogUrl = localizedUrl(locale, 'blog');
+const aboutUrl = localizedUrl(locale, 'about');
+const isProjectsPath = currentPath === 'projects' || currentPath.startsWith('projects/');
+const isBlogPath = currentPath === 'blog';
+const alternateLocale = locale === 'en' ? 'ja' : 'en';
+const alternateUrl = alternateLocalePath(Astro.url.pathname, alternateLocale);
+const displayName = locale === 'ja' ? 'パティルアニシュ' : 'Aneesh Patil';
 ---
 
 <header class="site-header">
-	<!-- Add your brand or logo here. -->
-
-	<a href={getRelativeLocaleUrl(locale, '')} aria-label="Aneesh Patil home">anee5h</a>
+	<a href={localizedUrl(locale)} aria-label={`${displayName} home`}>{displayName}</a>
 
 	<nav aria-label="Primary navigation">
-		<a href={getRelativeLocaleUrl(locale, 'projects')}>Projects</a>
-		<a href={getRelativeLocaleUrl(locale, 'blog')}>Blog</a>
-		<a href={getRelativeLocaleUrl(locale, 'about')}>About</a>
+		<a href={aboutUrl} data-astro-prefetch aria-current={currentPath === 'about' ? 'page' : undefined}>{copy.nav.about}</a>
+		<a href={projectsUrl} data-astro-prefetch aria-current={isProjectsPath ? 'page' : undefined}>{copy.nav.work}</a>
+		<a href={blogUrl} data-astro-prefetch aria-current={isBlogPath ? 'page' : undefined}>{copy.nav.writing}</a>
 	</nav>
 
-	<nav aria-label="Language selection">
-		<a href={getRelativeLocaleUrl('en', '')} lang="en">EN</a>
-		<a href={getRelativeLocaleUrl('ja', '')} lang="ja">日本語</a>
-	</nav>
+	<div class="site-header__tools">
+		<nav aria-label="Language selection">
+			<a
+				class="language-toggle"
+				href={alternateUrl}
+				lang={locale === 'en' ? 'ja' : 'en'}
+				aria-label={locale === 'en' ? '日本語に切り替える' : 'Switch to English'}
+				title={locale === 'en' ? '日本語' : 'English'}
+			>
+				<span aria-hidden="true">EN / JA</span>
+			</a>
+		</nav>
+
+		<button
+			class="theme-toggle"
+			type="button"
+			data-theme-toggle
+			data-light-label={locale === 'en' ? 'Switch to light mode' : 'ライトモードに切り替え'}
+			data-dark-label={locale === 'en' ? 'Switch to dark mode' : 'ダークモードに切り替え'}
+			aria-label={locale === 'en' ? 'Switch to light mode' : 'ライトモードに切り替え'}
+			aria-pressed="false"
+		>
+			<IconSun class="theme-toggle__sun" size={18} stroke={1.8} aria-hidden="true" />
+			<IconMoon class="theme-toggle__moon" size={18} stroke={1.8} aria-hidden="true" />
+		</button>
+	</div>
 
 	<style>
 	.site-header {
+		width: min(calc(100% - 2rem), var(--content-wide));
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
-		max-width: 1100px;
 		margin: 0 auto;
-		padding: 1.5rem 2rem;
+		padding: 1.25rem 0;
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	.site-header > a {
 		justify-self: start;
-		font-size: 1.25rem;
+		font-family: var(--font-heading);
+		font-size: 1.05rem;
 		font-weight: 600;
 		color: inherit;
 		text-decoration: none;
@@ -41,11 +77,19 @@ const locale = Astro.currentLocale ?? 'en';
 	.site-header nav {
 		display: flex;
 		align-items: center;
-		gap: 1.5rem;
+		gap: 1.25rem;
+		font-size: 0.9rem;
 	}
 
 	.site-header nav[aria-label='Primary navigation'] {
 		justify-self: center;
+	}
+
+	.site-header__tools {
+		display: flex;
+		align-items: center;
+		justify-self: end;
+		gap: 0.75rem;
 	}
 
 	.site-header nav[aria-label='Language selection'] {
@@ -53,9 +97,82 @@ const locale = Astro.currentLocale ?? 'en';
 		gap: 0.75rem;
 	}
 
+	.language-toggle {
+		display: inline-flex;
+		width: auto;
+		height: 2.5rem;
+		min-width: 4.5rem;
+		min-height: 2.5rem;
+		align-items: center;
+		justify-content: center;
+		padding: 0 0.75rem;
+		place-items: center;
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		color: var(--color-ink);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-decoration: none;
+	}
+
+	.language-toggle:hover,
+	.language-toggle:focus-visible {
+		border-color: var(--color-accent);
+		color: var(--color-accent);
+		text-decoration: none;
+	}
+
+	.theme-toggle {
+		display: grid;
+		width: 2.5rem;
+		height: 2.5rem;
+		min-width: 2.5rem;
+		min-height: 2.5rem;
+		flex: 0 0 2.5rem;
+		padding: 0;
+		place-items: center;
+		border: 1px solid var(--color-border);
+		border-radius: 50%;
+		background: transparent;
+		color: var(--color-ink);
+		cursor: pointer;
+		appearance: none;
+		-webkit-appearance: none;
+	}
+
+	.theme-toggle:hover,
+	.theme-toggle:focus-visible {
+		border-color: var(--color-accent);
+		color: var(--color-accent);
+	}
+
+	.theme-toggle svg {
+		width: 1.15rem;
+		height: 1.15rem;
+	}
+
+	.theme-toggle__sun {
+		display: none;
+	}
+
+	html[data-theme='light'] .theme-toggle__sun {
+		display: block;
+	}
+
+	html[data-theme='light'] .theme-toggle__moon {
+		display: none;
+	}
+
 	.site-header nav a {
 		color: inherit;
 		text-decoration: none;
+	}
+
+	.site-header nav a[aria-current='page'] {
+		font-weight: 700;
+		color: var(--color-accent);
 	}
 
 	.site-header nav a:hover,
@@ -66,15 +183,47 @@ const locale = Astro.currentLocale ?? 'en';
 
 	@media (max-width: 650px) {
 		.site-header {
-			grid-template-columns: 1fr auto;
-			row-gap: 1rem;
-			padding: 1.25rem;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 1rem;
+			padding: 1.25rem 0;
+		}
+
+		.site-header > a {
+			flex: 1 1 auto;
 		}
 
 		.site-header nav[aria-label='Primary navigation'] {
-			grid-column: 1 / -1;
-			justify-self: start;
+			order: 3;
+			width: 100%;
+			justify-self: auto;
 			flex-wrap: wrap;
+		}
+
+		.site-header__tools {
+			order: 2;
+			margin-left: auto;
+		}
+	}
+
+	@media (max-width: 400px) {
+		.site-header {
+			display: block;
+		}
+
+		.site-header > a {
+			display: block;
+			margin-bottom: 1rem;
+		}
+
+		.site-header__tools {
+			margin: 0 0 1rem;
+			justify-content: flex-start;
+		}
+
+		.site-header nav[aria-label='Primary navigation'] {
+			gap: 0.75rem;
 		}
 	}
 </style>

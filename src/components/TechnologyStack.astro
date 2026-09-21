@@ -1,0 +1,109 @@
+---
+import {
+	IconApi,
+	IconBrandAstro,
+	IconBrandGit,
+	IconBrandGithub,
+	IconBrandGitlab,
+	IconBrandJavascript,
+	IconBrandNodejs,
+	IconBrandPhp,
+	IconBrandPython,
+	IconBrandReact,
+	IconBrandTypescript,
+	IconDatabase,
+	IconFunction,
+	IconHeadset,
+	IconLayoutKanban,
+	IconTestPipe,
+	IconTimeline,
+} from '@tabler/icons-astro';
+
+interface Props {
+	technologies: readonly string[];
+	label: string;
+	variant?: 'inline' | 'chips';
+	showIcons?: boolean;
+}
+
+const { technologies, label, variant = 'inline', showIcons = false } = Astro.props;
+
+function getTechnologyIcon(name: string) {
+	const technology = name.toLowerCase();
+
+	if (technology.includes('react')) return IconBrandReact;
+	if (technology.includes('typescript')) return IconBrandTypescript;
+	if (technology.includes('javascript')) return IconBrandJavascript;
+	if (technology.includes('node')) return IconBrandNodejs;
+	if (technology.includes('python')) return IconBrandPython;
+	if (technology === 'php') return IconBrandPhp;
+	if (technology.includes('lambda')) return IconFunction;
+	if (technology.includes('api gateway')) return IconApi;
+	if (technology.includes('astro')) return IconBrandAstro;
+	if (technology.includes('github')) return IconBrandGithub;
+	if (technology.includes('gitlab')) return IconBrandGitlab;
+	if (technology === 'git') return IconBrandGit;
+	if (technology.includes('linear')) return IconTimeline;
+	if (technology.includes('backlog')) return IconLayoutKanban;
+	if (technology.includes('playwright') || technology.includes('vitest') || technology.includes('jest')) return IconTestPipe;
+	if (technology.includes('rest') || technology.includes('api')) return IconApi;
+	if (technology.includes('sql')) return IconDatabase;
+	if (technology.includes('zendesk')) return IconHeadset;
+
+	return null;
+}
+---
+
+<ul class:list={['technology-stack', `technology-stack--${variant}`]} aria-label={label}>
+	{technologies.map((technology) => {
+		const Icon = showIcons ? getTechnologyIcon(technology) : null;
+
+		return (
+			<li>
+				{Icon && <Icon class="technology-stack__icon" size={variant === 'chips' ? 16 : 18} stroke={1.8} aria-hidden="true" />}
+				<span>{technology}</span>
+			</li>
+		);
+	})}
+</ul>
+
+<style>
+	.technology-stack {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem 1rem;
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+
+	.technology-stack li {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		color: var(--color-muted);
+		font-size: 0.9rem;
+	}
+
+	.technology-stack__icon {
+		flex: 0 0 auto;
+		color: var(--color-muted);
+	}
+
+	.technology-stack--inline li:not(:last-child)::after {
+		content: '·';
+		margin-left: 0.35rem;
+		color: var(--color-accent);
+	}
+
+	.technology-stack--chips {
+		gap: 0.65rem;
+	}
+
+	.technology-stack--chips li {
+		padding: 0.35rem 0.65rem;
+		border: 1px solid var(--color-border);
+		border-radius: 2px;
+		font-size: 0.85rem;
+	}
+</style>

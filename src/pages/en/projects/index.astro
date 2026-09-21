@@ -1,0 +1,59 @@
+---
+import ProjectCard from '../../../components/ProjectCard.astro';
+import Layout from '../../../layouts/Layout.astro';
+import { getCopy } from '../../../data/site';
+import { getPublicProjects } from '../../../lib/projects';
+
+const locale = 'en';
+const copy = getCopy(locale);
+const projects = await getPublicProjects(locale);
+---
+
+<Layout title={copy.work.metaTitle} description={copy.work.metaDescription} pagePath="projects">
+	<main class="work-page page-shell">
+		<header class="page-intro">
+			<h1>{copy.work.title}</h1>
+			<p>{copy.work.intro}</p>
+		</header>
+
+		<section class="work-list" aria-label={copy.work.title}>
+			{projects.length > 0 ? projects.map((project, index) => (
+				<ProjectCard project={project} locale={locale} featured={index === 0} />
+			)) : <p class="empty-state">{copy.work.empty}</p>}
+		</section>
+	</main>
+
+	<style>
+		.work-page {
+			padding-top: clamp(3rem, 8vw, 6rem);
+		}
+
+		.page-intro {
+			max-width: 46rem;
+			padding-bottom: clamp(3rem, 8vw, 6rem);
+		}
+
+		.page-intro h1 {
+			margin: 0;
+			font-size: clamp(3rem, 7vw, 5.5rem);
+			letter-spacing: -0.06em;
+			line-height: 0.95;
+		}
+
+		.page-intro > p:last-child {
+			max-width: 38rem;
+			margin: 1.5rem 0 0;
+			font-size: clamp(1.05rem, 2vw, 1.25rem);
+		}
+
+		.work-list {
+			padding-bottom: 2rem;
+		}
+
+		.empty-state {
+			padding: 2rem 0;
+			border-top: 1px solid var(--color-border);
+			color: var(--color-muted);
+		}
+	</style>
+</Layout>

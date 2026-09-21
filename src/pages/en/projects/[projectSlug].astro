@@ -1,0 +1,41 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { IconArrowUpRight } from '@tabler/icons-astro';
+import ProjectCaseStudy from '../../../components/ProjectCaseStudy.astro';
+import Layout from '../../../layouts/Layout.astro';
+import { getCopy } from '../../../data/site';
+import { getPublicProjects } from '../../../lib/projects';
+import { localizedUrl } from '../../../lib/urls';
+
+const locale = 'en' as const;
+const copy = getCopy(locale);
+
+export async function getStaticPaths() {
+	const locale = 'en';
+	const projects = await getPublicProjects(locale);
+
+	return projects.map((project) => ({
+		params: { projectSlug: project.data.projectSlug },
+		props: { project },
+	}));
+}
+
+const { project } = Astro.props as { project: CollectionEntry<'projects'> };
+const { Content } = await render(project);
+---
+
+<Layout title={`${project.data.title} | ${copy.work.metaTitle}`} description={project.data.summary} pagePath={`projects/${project.data.projectSlug}`}>
+	<main>
+		<ProjectCaseStudy project={project} locale={locale}>
+			<Content />
+		</ProjectCaseStudy>
+		<div class="case-study-footer reading-column">
+			<a href={localizedUrl(locale, 'projects')}>{copy.actions.backToWork} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>
+		</div>
+	</main>
+	<style>
+		.case-study-footer {
+			padding-bottom: 2rem;
+		}
+	</style>
+</Layout>

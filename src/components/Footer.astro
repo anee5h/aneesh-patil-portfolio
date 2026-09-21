@@ -1,21 +1,70 @@
+---
+import { IconBrandGithub, IconBrandLinkedin, IconMail } from '@tabler/icons-astro';
+import { siteLinks, type Locale } from '../data/site';
+
+const locale = (Astro.currentLocale ?? 'en') as Locale;
+const displayName = locale === 'ja' ? 'パティルアニシュ' : 'Aneesh Patil';
+---
+
 <footer class="site-footer">
-	<nav aria-label="Footer navigation">
-		<a href="https://github.com/anee5h" target="_blank" rel="noreferrer">github</a>
-		<a href="https://linkedin.com/in/anee5h" target="_blank" rel="noreferrer">linkedin</a>
-		<a href="mailto:hello@anee5h.com">email</a>
-		<a href="/resume.pdf" target="_blank" rel="noreferrer">resume</a>
+	<nav aria-label={locale === 'ja' ? 'プロフィールリンク' : 'Professional links'}>
+		<a href={siteLinks.github} target="_blank" rel="noopener noreferrer">
+			<IconBrandGithub size={16} stroke={1.8} aria-hidden="true" />
+			GitHub
+		</a>
+		<a href={siteLinks.linkedin} target="_blank" rel="noopener noreferrer">
+			<IconBrandLinkedin size={16} stroke={1.8} aria-hidden="true" />
+			LinkedIn
+		</a>
+		<a href={siteLinks.email}>
+			<IconMail size={16} stroke={1.8} aria-hidden="true" />
+			hello@anee5h.com
+		</a>
 	</nav>
+	<p class="site-footer__local">
+		<span>Asia/Tokyo</span>
+		<span aria-hidden="true">·</span>
+		<time data-local-time dateTime=""></time>
+	</p>
+	<p class="site-footer__note">{displayName} · anee5h.com</p>
 	<style>
 	.site-footer {
-		margin-top: 2rem;
-		padding: 2rem 1rem;
+		width: min(calc(100% - 2rem), 920px);
+		margin: 0 auto;
+		padding: 3rem 0 2rem;
+		border-top: 1px solid var(--color-border);
 	}
 
 	.site-footer nav {
 		display: flex;
-		justify-content: center;
-		gap: 2rem;
+		flex-wrap: wrap;
+		gap: 1rem 1.5rem;
+	}
+
+	.site-footer nav a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-size: 0.95rem;
+	}
+
+	.site-footer__local {
+		display: flex;
+		gap: 0.5rem;
+		margin: 1rem 0 0;
+		color: var(--color-muted);
+		font-size: 0.85rem;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.site-footer__local time {
+		color: var(--color-ink);
+	}
+
+	.site-footer__note {
+		margin: 2rem 0 0;
+		color: var(--color-muted);
+		font-size: 0.85rem;
 	}
 </style>
-	<!-- Add location, copyright, or other footer metadata here. -->
 </footer>

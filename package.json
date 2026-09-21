@@ -12,6 +12,8 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@tabler/icons-astro": "^3.47.0",
     "astro": "^7.2.9"
   },
   "allowScripts": {

@@ -1,0 +1,272 @@
+---
+import { IconArrowUpRight, IconBrandGithub, IconBrandLinkedin, IconMail } from '@tabler/icons-astro';
+import ExperienceItem from './ExperienceItem.astro';
+import ProjectCard from './ProjectCard.astro';
+import TechnologyStack from './TechnologyStack.astro';
+import Layout from '../layouts/Layout.astro';
+import { getCopy, type Locale, siteLinks } from '../data/site';
+import { getFeaturedProject } from '../lib/projects';
+import { localizedUrl } from '../lib/urls';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const featuredProject = await getFeaturedProject(locale);
+const experience = copy.about.experience.slice(0, 2);
+---
+
+<Layout title={copy.home.metaTitle} description={copy.home.metaDescription}>
+	<main class="home-page">
+		<section class="home-intro page-shell">
+			<div class="home-intro__content">
+				<p class="eyebrow">{copy.home.eyebrow}</p>
+				<h1>{copy.home.title}</h1>
+				<div class="home-intro__summary">
+					{copy.home.intro.map((paragraph) => <p>{paragraph}</p>)}
+				</div>
+				<div class="home-intro__details">
+					<TechnologyStack technologies={copy.home.stack.split(' · ')} label={copy.project.stack} />
+				</div>
+			</div>
+
+			<aside class="home-links">
+				<nav aria-label={locale === 'ja' ? '連絡先とプロフィールリンク' : 'Contact and professional links'}>
+					<a href={siteLinks.email}>
+						<IconMail size={17} stroke={1.8} aria-hidden="true" />
+						hello@anee5h.com
+					</a>
+					<a href={siteLinks.linkedin} target="_blank" rel="noopener noreferrer">
+						<IconBrandLinkedin size={17} stroke={1.8} aria-hidden="true" />
+						LinkedIn
+					</a>
+					<a href={siteLinks.github} target="_blank" rel="noopener noreferrer">
+						<IconBrandGithub size={17} stroke={1.8} aria-hidden="true" />
+						{copy.actions.github}
+					</a>
+				</nav>
+				<div class="home-availability">
+					<p>{copy.home.availabilityTitle}</p>
+					<p>{copy.home.availabilityLocation}</p>
+				</div>
+			</aside>
+		</section>
+
+		<section class="home-section page-shell" aria-labelledby="experience-preview-title">
+			<header class="section-header">
+				<p class="eyebrow">{copy.home.experienceTitle}</p>
+				<h2 id="experience-preview-title">{copy.home.experienceText}</h2>
+			</header>
+			<div class="experience-preview">
+				{experience.map((item) => <ExperienceItem {...item} compact />)}
+			</div>
+			<a class="text-link" href={localizedUrl(locale, 'about')} data-astro-prefetch>
+				{copy.nav.about} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" />
+			</a>
+		</section>
+
+		{featuredProject && (
+			<section class="home-section page-shell" aria-label={copy.nav.work}>
+				<header class="section-header">
+					<p class="eyebrow">{copy.home.projectEyebrow}</p>
+					<h2>{copy.home.projectIntro}</h2>
+				</header>
+				<ProjectCard project={featuredProject} locale={locale} featured />
+				<a class="text-link project-preview-link" href={localizedUrl(locale, 'projects')} data-astro-prefetch>
+					{copy.nav.work} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" />
+				</a>
+			</section>
+		)}
+
+		<section class="home-section page-shell home-writing" aria-labelledby="writing-preview-title">
+			<header class="section-header">
+				<p class="eyebrow">{copy.home.writingTitle}</p>
+				<h2 id="writing-preview-title">{copy.home.writingText}</h2>
+			</header>
+			<p class="home-writing__empty">
+				{copy.home.writingEmpty}
+				<a class="text-link" href={localizedUrl(locale, 'blog')} data-astro-prefetch>{copy.nav.writing} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>
+			</p>
+		</section>
+
+	</main>
+</Layout>
+
+<style>
+	.home-page {
+		padding-bottom: 2rem;
+	}
+
+	.home-intro {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 15rem;
+		gap: clamp(2rem, 8vw, 7rem);
+		padding-top: clamp(4rem, 10vw, 7rem);
+		padding-bottom: clamp(3rem, 8vw, 5rem);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.home-intro h1 {
+		margin: 0;
+		font-size: clamp(3rem, 7vw, 5.5rem);
+		letter-spacing: -0.075em;
+		line-height: 0.98;
+	}
+
+	.home-intro__summary {
+		max-width: 42rem;
+		margin: 1.75rem 0 0;
+		font-size: clamp(1.05rem, 2vw, 1.3rem);
+		line-height: 1.6;
+	}
+
+	.home-intro__summary p {
+		margin: 0;
+	}
+
+	.home-intro__summary p + p {
+		margin-top: 1rem;
+	}
+
+	.home-intro__details {
+		margin: 1.5rem 0 0;
+		color: var(--color-muted);
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		line-height: 1.8;
+	}
+
+	.home-links {
+		align-self: start;
+		padding-left: 1.25rem;
+		border-left: 1px solid var(--color-border);
+	}
+
+	.home-links nav {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+	}
+
+	.home-links a,
+	.text-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.home-links a:hover,
+	.home-links a:focus-visible,
+	.text-link:hover,
+	.text-link:focus-visible {
+		color: var(--color-accent);
+	}
+
+	.home-availability {
+		margin-top: 2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.home-availability p {
+		margin: 0;
+	}
+
+	.home-availability p:first-child {
+		font-size: 0.85rem;
+		font-weight: 700;
+		line-height: 1.45;
+	}
+
+	.home-availability p:last-child {
+		margin-top: 0.35rem;
+		color: var(--color-muted);
+		font-size: 0.8rem;
+		line-height: 1.5;
+	}
+
+	.home-section {
+		padding-top: var(--space-section);
+		padding-bottom: var(--space-section);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.section-header {
+		max-width: 42rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.section-header h2 {
+		max-width: 34rem;
+		margin: 0;
+		font-size: clamp(1.5rem, 3vw, 2.25rem);
+		letter-spacing: -0.04em;
+		line-height: 1.2;
+	}
+
+	.experience-preview {
+		max-width: 52rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.project-preview-link {
+		margin-top: 1.25rem;
+	}
+
+	.home-writing {
+		border-bottom: 0;
+	}
+
+	.home-writing__empty {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 2rem;
+		padding: 1.25rem 0;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.home-writing__empty {
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.home-writing__empty {
+		justify-content: flex-start;
+		color: var(--color-muted);
+	}
+
+	.home-writing__empty .text-link {
+		color: var(--color-ink);
+	}
+
+	@media (max-width: 650px) {
+		.home-intro {
+			display: block;
+		}
+
+		.home-links {
+			margin-top: 2.5rem;
+			padding-top: 1.25rem;
+			padding-left: 0;
+			border-top: 1px solid var(--color-border);
+			border-left: 0;
+		}
+
+		.home-writing__empty {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+	}
+
+	html[lang='ja'] .home-intro__summary,
+	html[lang='ja'] .home-writing__empty {
+		line-height: 1.85;
+	}
+</style>

@@ -1,0 +1,73 @@
+---
+import { IconArrowUpRight } from '@tabler/icons-astro';
+import { getCopy, type Locale } from '../data/site';
+import Layout from '../layouts/Layout.astro';
+import { localizedUrl } from '../lib/urls';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+---
+
+<Layout title={copy.writing.metaTitle} description={copy.writing.metaDescription} pagePath="blog" noindex>
+	<main class="writing-page page-shell">
+		<header class="page-intro">
+			<h1>{copy.writing.title}</h1>
+			<p>{copy.writing.intro}</p>
+		</header>
+
+		<section class="empty-state" aria-labelledby="empty-title">
+			<p class="eyebrow">{copy.writing.emptyTitle}</p>
+			<h2 id="empty-title">{copy.writing.emptyText}</h2>
+			<a class="button-link button-link--quiet" href={localizedUrl(locale, 'projects')} data-astro-prefetch>
+				{copy.actions.viewCaseStudy} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" />
+			</a>
+		</section>
+	</main>
+
+	<style>
+		.writing-page {
+			padding-top: clamp(3rem, 8vw, 6rem);
+		}
+
+		.page-intro {
+			max-width: 46rem;
+			padding-bottom: var(--space-section);
+		}
+
+		.page-intro h1 {
+			margin: 0;
+			font-size: clamp(3rem, 7vw, 5.5rem);
+			letter-spacing: -0.06em;
+			line-height: 0.98;
+		}
+
+		.page-intro > p:last-child {
+			max-width: 38rem;
+			margin: 1.5rem 0 0;
+			font-size: clamp(1.05rem, 2vw, 1.25rem);
+		}
+
+	.empty-state {
+		max-width: 48rem;
+	}
+
+	.empty-state {
+		padding: 3rem 0;
+		border-top: 1px solid var(--color-border);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+		.empty-state h2 {
+			max-width: 32rem;
+			margin: 0 0 2rem;
+			font-size: clamp(1.5rem, 2.7vw, 2.15rem);
+			letter-spacing: -0.04em;
+			line-height: 1.1;
+		}
+
+</style>
+</Layout>

@@ -1,0 +1,76 @@
+---
+interface Props {
+	company: string;
+	role: string;
+	period: string;
+	description: string;
+	compact?: boolean;
+}
+
+const { company, role, period, description, compact = false } = Astro.props;
+---
+
+<article class:list={['experience-item', { 'experience-item--compact': compact }]}>
+	<div class="experience-item__meta">
+		<strong>{company}</strong>
+		<span>{period}</span>
+	</div>
+	<h3>{role}</h3>
+	<p>{description}</p>
+</article>
+
+<style>
+	.experience-item {
+		padding: 1.5rem 0;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.experience-item__meta {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		color: var(--color-muted);
+		font-size: 0.9rem;
+	}
+
+	.experience-item__meta strong {
+		color: var(--color-ink);
+	}
+
+	.experience-item h3 {
+		margin: 0.5rem 0;
+		font-size: 1.25rem;
+		line-height: 1.3;
+	}
+
+	.experience-item p {
+		max-width: 44rem;
+		margin: 0;
+		color: var(--color-muted);
+	}
+
+	.experience-item--compact {
+		padding: 1.25rem 0;
+	}
+
+	.experience-item--compact h3 {
+		font-size: 1.1rem;
+	}
+
+	.experience-item--compact p {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		overflow: hidden;
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	@media (max-width: 520px) {
+		.experience-item__meta {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.25rem;
+		}
+	}
+</style>

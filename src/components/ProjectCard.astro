@@ -1,0 +1,214 @@
+---
+import { IconArrowUpRight, IconBrandGithub } from '@tabler/icons-astro';
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { getCopy, type Locale } from '../data/site';
+import TechnologyStack from './TechnologyStack.astro';
+import { localizedUrl } from '../lib/urls';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+	locale: Locale;
+	featured?: boolean;
+}
+
+const { project, locale, featured = false } = Astro.props;
+const data = project.data;
+const copy = getCopy(locale);
+const href = localizedUrl(locale, `projects/${data.projectSlug}`);
+const status = copy.status[data.status];
+---
+
+<article class:list={['project-card', { 'project-card--featured': featured }]}>
+	{featured && data.cover && (
+		<div class="project-card__media">
+			<Image src={data.cover} alt={data.coverAlt ?? data.title} loading="eager" />
+		</div>
+	)}
+	<div class="project-card__body">
+		<div class="project-card__heading">
+			<div>
+				<h2 class="project-card__title">
+					{data.logo && <Image class="project-card__logo" src={data.logo} alt="" width={48} height={48} />}
+					<a href={href} data-astro-prefetch>{data.title}</a>
+				</h2>
+			</div>
+			<span class="project-card__status">{status}</span>
+		</div>
+		<p>{data.summary}</p>
+		<div class="project-card__stack">
+			<TechnologyStack technologies={data.stack.slice(0, 5)} label={copy.project.stack} />
+		</div>
+		<div class="project-card__links">
+			<a class="button-link" href={href} data-astro-prefetch>{copy.actions.viewCaseStudy} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>
+			{data.links?.website && (
+				<a class="button-link button-link--quiet" href={data.links.website} target="_blank" rel="noopener noreferrer">{copy.actions.liveProduct} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>
+			)}
+			{data.links?.github && (
+				<a class="button-link button-link--quiet" href={data.links.github} target="_blank" rel="noopener noreferrer">
+					<IconBrandGithub size={16} stroke={1.8} aria-hidden="true" />
+					{copy.actions.github} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" />
+				</a>
+			)}
+		</div>
+	</div>
+</article>
+
+<style>
+	.project-card {
+		padding: 2rem 0;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.project-card--featured {
+		display: grid;
+		grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+		align-items: stretch;
+		gap: clamp(1.25rem, 2.5vw, 2rem);
+		padding: clamp(0.75rem, 2vw, 1.25rem);
+		border: 1px solid var(--color-border);
+		border-left: 3px solid var(--color-accent);
+		background: var(--color-panel);
+	}
+
+	.project-card__media {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 12rem;
+		overflow: hidden;
+		border-radius: 0.7rem;
+		background: #030819;
+	}
+
+	.project-card__media img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: center;
+	}
+
+	.project-card__body {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		min-width: 0;
+		padding: 1rem 0;
+	}
+
+	.project-card__heading {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.project-card h2 {
+		margin: 0;
+		font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+		letter-spacing: -0.04em;
+		line-height: 1.1;
+	}
+
+	.project-card__title {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+	}
+
+	.project-card__logo {
+		flex: 0 0 auto;
+		width: 3rem;
+		height: 3rem;
+		border-radius: 0.7rem;
+	}
+
+	.project-card h2 a {
+		text-decoration: none;
+	}
+
+	.project-card > p {
+		max-width: 52rem;
+		margin: 1.5rem 0;
+		font-size: clamp(1.05rem, 2vw, 1.25rem);
+	}
+
+	.project-card--featured > .project-card__body > p {
+		margin-block: 1rem;
+		font-size: clamp(1rem, 1.6vw, 1.1rem);
+	}
+
+	.project-card--featured .project-card__stack {
+		padding-top: 1rem;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.project-card__status {
+		flex: 0 0 auto;
+		padding: 0.35rem 0.65rem;
+		border: 1px solid var(--color-border);
+		border-radius: 2px;
+		color: var(--color-muted);
+		font-size: 0.8rem;
+		font-weight: 700;
+	}
+
+	.project-card__links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+		margin-top: 1.25rem;
+	}
+
+	.project-card--featured .project-card__links {
+		display: grid;
+		grid-template-columns: repeat(3, max-content);
+		gap: 0.5rem;
+	}
+
+	.project-card--featured .project-card__links .button-link {
+		padding-inline: 0.85rem;
+		font-size: 0.9rem;
+		white-space: nowrap;
+	}
+
+	.project-card__links > .button-link:first-child {
+		border-color: var(--color-ink);
+		background: var(--color-ink);
+		color: var(--color-paper);
+	}
+
+	.project-card__links > .button-link:first-child:hover,
+	.project-card__links > .button-link:first-child:focus-visible {
+		border-color: var(--color-accent);
+		background: var(--color-accent);
+		color: #1b1d1a;
+	}
+
+	@media (max-width: 820px) {
+		.project-card--featured .project-card__links {
+			display: flex;
+			flex-wrap: wrap;
+		}
+	}
+
+	@media (max-width: 560px) {
+		.project-card--featured {
+			display: block;
+			padding: 1rem;
+		}
+
+		.project-card__media {
+			aspect-ratio: 1.44;
+			min-height: 0;
+		}
+
+		.project-card__body {
+			padding: 1.5rem 0 0;
+		}
+
+		.project-card__heading {
+			flex-direction: column;
+		}
+	}
+</style>

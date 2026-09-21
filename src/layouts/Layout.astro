@@ -1,8 +1,37 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import { getCopy, locales, type Locale } from '../data/site';
+import { localizedUrl } from '../lib/urls';
+import '../styles/global.css';
 
-const locale = Astro.currentLocale ?? 'en';
+interface Props {
+	title?: string;
+	description?: string;
+	pagePath?: string;
+	ogImage?: string;
+	noindex?: boolean;
+}
+
+const {
+	title,
+	description,
+	pagePath = '',
+	ogImage,
+	noindex = false,
+} = Astro.props;
+const locale = (Astro.currentLocale ?? 'en') as Locale;
+const copy = getCopy(locale);
+const pageTitle = title ?? 'Aneesh Patil';
+const pageDescription = description ?? copy.home.metaDescription;
+const baseUrl = Astro.site ?? Astro.url;
+const canonicalUrl = new URL(localizedUrl(locale, pagePath), baseUrl);
+const alternateUrls = locales.map((alternateLocale) => ({
+	locale: alternateLocale,
+	url: new URL(localizedUrl(alternateLocale, pagePath), baseUrl),
+}));
+const socialImage = ogImage ? new URL(ogImage, baseUrl) : undefined;
 ---
 
 <!doctype html>
@@ -10,10 +39,113 @@ const locale = Astro.currentLocale ?? 'en';
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
+		<script is:inline>
+			function getPreferredTheme() {
+				try {
+					const savedTheme = localStorage.getItem('theme');
+					if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
+				} catch {}
+
+				return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+			}
+
+			try {
+				document.documentElement.dataset.theme = getPreferredTheme();
+			} catch {
+				document.documentElement.dataset.theme = 'dark';
+			}
+		</script>
+		<ClientRouter />
+		<script is:inline>
+			(() => {
+				if (window.__anee5hSiteInitialized) return;
+				window.__anee5hSiteInitialized = true;
+
+				function readTheme() {
+					try {
+						const savedTheme = localStorage.getItem('theme');
+						if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
+					} catch {}
+
+					return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+				}
+
+				function setTheme(theme, root = document.documentElement) {
+					root.dataset.theme = theme;
+				}
+
+				setTheme(readTheme());
+
+				document.addEventListener('astro:before-swap', (event) => {
+					if (event.newDocument?.documentElement) setTheme(readTheme(), event.newDocument.documentElement);
+				});
+
+				document.addEventListener('astro:page-load', () => {
+					const themeToggle = document.querySelector('[data-theme-toggle]');
+					if (themeToggle && themeToggle.dataset.initialized !== 'true') {
+						const updateToggle = () => {
+							const isLight = document.documentElement.dataset.theme === 'light';
+							themeToggle.setAttribute('aria-pressed', String(isLight));
+							themeToggle.setAttribute(
+								'aria-label',
+								isLight ? themeToggle.dataset.darkLabel : themeToggle.dataset.lightLabel,
+							);
+						};
+
+						updateToggle();
+						themeToggle.addEventListener('click', () => {
+							const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+							setTheme(nextTheme);
+							updateToggle();
+							try {
+								localStorage.setItem('theme', nextTheme);
+							} catch {}
+						});
+						themeToggle.dataset.initialized = 'true';
+					}
+
+					if (window.__anee5hClockInterval) window.clearInterval(window.__anee5hClockInterval);
+					const localTime = document.querySelector('[data-local-time]');
+					if (!localTime) return;
+					const timeFormatter = new Intl.DateTimeFormat(document.documentElement.lang === 'ja' ? 'ja-JP' : 'en-US', {
+						timeZone: 'Asia/Tokyo',
+						hour: '2-digit',
+						minute: '2-digit',
+						hour12: false,
+					});
+
+					const updateLocalTime = () => {
+						const now = new Date();
+						localTime.textContent = `${timeFormatter.format(now)} JST`;
+						localTime.dateTime = now.toISOString();
+					};
+
+					updateLocalTime();
+					window.__anee5hClockInterval = window.setInterval(updateLocalTime, 30_000);
+				});
+			})();
+		</script>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Aneesh Patil</title>
+		<title>{pageTitle}</title>
+		<meta name="description" content={pageDescription} />
+		<link rel="canonical" href={canonicalUrl} />
+		{alternateUrls.map(({ locale: alternateLocale, url }) => (
+			<link rel="alternate" hreflang={alternateLocale} href={url} />
+		))}
+		<link rel="alternate" hreflang="x-default" href={alternateUrls[0].url} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={pageDescription} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:locale" content={locale === 'ja' ? 'ja_JP' : 'en_US'} />
+		{socialImage && <meta property="og:image" content={socialImage} />}
+		<meta name="twitter:card" content={socialImage ? 'summary_large_image' : 'summary'} />
+		{noindex && <meta name="robots" content="noindex,follow" />}
 		<!-- Google tag (gtag.js) -->
 		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-X9H08MRLW9"></script>
 		<script is:inline>

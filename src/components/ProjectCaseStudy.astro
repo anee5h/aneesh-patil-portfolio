@@ -1,0 +1,246 @@
+---
+import { IconArrowUpRight, IconBrandGithub } from '@tabler/icons-astro';
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { getCopy, type Locale } from '../data/site';
+import TechnologyStack from './TechnologyStack.astro';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+	locale: Locale;
+}
+
+const { project, locale } = Astro.props;
+const data = project.data;
+const copy = getCopy(locale);
+const status = copy.status[data.status];
+---
+
+<article class="case-study reading-column">
+	<header class="case-study__header">
+		<p class="eyebrow">{copy.project.featured}</p>
+		<h1>
+			{data.logo && <Image class="case-study__logo" src={data.logo} alt="" width={64} height={64} />}
+			<span>{data.title}</span>
+		</h1>
+		<p class="case-study__summary">{data.summary}</p>
+		<div class="case-study__facts" aria-label="Project details">
+			<div>
+				<span>{copy.project.status}</span>
+				<strong>{status}</strong>
+			</div>
+			{data.role && (
+				<div>
+					<span>{copy.project.role}</span>
+					<strong>{data.role}</strong>
+				</div>
+			)}
+			<div>
+				<span>{copy.project.year}</span>
+				<strong>{data.year}</strong>
+			</div>
+		</div>
+		<TechnologyStack technologies={data.stack} label={copy.project.stack} variant="chips" />
+		{data.links && (
+			<nav class="case-study__links" aria-label={copy.project.links}>
+				{data.links.website && <a class="button-link" href={data.links.website} target="_blank" rel="noopener noreferrer">{copy.actions.liveProduct} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>}
+				{data.links.github && <a class="button-link button-link--quiet" href={data.links.github} target="_blank" rel="noopener noreferrer"><IconBrandGithub size={16} stroke={1.8} aria-hidden="true" />{copy.actions.github} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>}
+				{data.links.pullRequests?.map((url, index) => <a class="button-link button-link--quiet" href={url} target="_blank" rel="noopener noreferrer">{copy.actions.pullRequest}{data.links?.pullRequests && data.links.pullRequests.length > 1 ? ` ${index + 1}` : ''} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>)}
+			</nav>
+		)}
+	</header>
+
+	{data.cover && (
+		<figure class="case-study__cover">
+			<Image src={data.cover} alt={data.coverAlt ?? data.title} loading="eager" />
+			{data.coverAlt && <figcaption>{data.coverAlt}</figcaption>}
+		</figure>
+	)}
+
+	{data.architecture && (
+		<figure class="case-study__architecture">
+			<Image src={data.architecture.image} alt={data.architecture.alt} />
+			{data.architecture.caption && <figcaption>{data.architecture.caption}</figcaption>}
+		</figure>
+	)}
+
+	<div class="case-study__content">
+		<slot />
+	</div>
+
+	{data.screenshots.length > 0 && (
+		<div class="case-study__screenshots">
+			{data.screenshots.map((screenshot) => (
+				<figure>
+					<Image src={screenshot.image} alt={screenshot.alt} />
+					{(screenshot.caption || screenshot.alt) && <figcaption>{screenshot.caption ?? screenshot.alt}</figcaption>}
+				</figure>
+			))}
+		</div>
+	)}
+</article>
+
+<style>
+	.case-study {
+		padding-top: clamp(2rem, 7vw, 5rem);
+	}
+
+	.case-study__header {
+		padding-bottom: 3rem;
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.case-study h1 {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin: 0;
+		font-size: clamp(3rem, 7vw, 5.5rem);
+		letter-spacing: -0.06em;
+		line-height: 0.95;
+	}
+
+	.case-study__logo {
+		flex: 0 0 auto;
+		width: clamp(3.5rem, 8vw, 5rem);
+		height: clamp(3.5rem, 8vw, 5rem);
+		border-radius: 1rem;
+	}
+
+	.case-study__summary {
+		max-width: 42rem;
+		margin: 1.5rem 0;
+		font-size: clamp(1.05rem, 2vw, 1.3rem);
+		line-height: 1.5;
+	}
+
+	.case-study__facts {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+		margin: 2rem 0;
+	}
+
+	.case-study__facts div {
+		display: grid;
+		gap: 0.25rem;
+		padding-top: 0.75rem;
+		border-top: 2px solid var(--color-accent);
+	}
+
+	.case-study__facts span {
+		color: var(--color-muted);
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.case-study__facts strong {
+		font-size: 1rem;
+	}
+
+	.case-study__links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+		margin: 0;
+		padding: 0;
+	}
+
+	.case-study__content {
+		padding: 3rem 0;
+	}
+
+	.case-study__cover,
+	.case-study__architecture,
+	.case-study__screenshots figure {
+		margin: 2rem 0 0;
+	}
+
+	.case-study__cover img {
+		width: 100%;
+		border: 1px solid var(--color-border);
+	}
+
+	.case-study__architecture {
+		padding: clamp(1rem, 4vw, 2rem);
+		border: 1px solid var(--color-border);
+		background: var(--color-panel);
+	}
+
+	.case-study__architecture img {
+		width: 100%;
+	}
+
+	.case-study__screenshots {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+		padding-bottom: 1rem;
+	}
+
+	.case-study__screenshots figure {
+		margin: 0;
+	}
+
+	.case-study__content :global(h2) {
+		margin: 3.5rem 0 1rem;
+		font-size: clamp(1.6rem, 4vw, 2.25rem);
+		letter-spacing: -0.04em;
+		line-height: 1.2;
+	}
+
+	.case-study__content :global(h3) {
+		margin: 2.5rem 0 0.75rem;
+		font-size: 1.3rem;
+		line-height: 1.3;
+	}
+
+	.case-study__content :global(p),
+	.case-study__content :global(ul),
+	.case-study__content :global(ol) {
+		margin-block: 1rem;
+	}
+
+	.case-study__content :global(ul),
+	.case-study__content :global(ol) {
+		padding-left: 1.25rem;
+	}
+
+	.case-study__content :global(img) {
+		width: 100%;
+		margin: 2rem 0;
+		border: 1px solid var(--color-border);
+	}
+
+	.case-study__content :global(figcaption) {
+		margin-top: -1.5rem;
+		color: var(--color-muted);
+		font-size: 0.9rem;
+	}
+
+	.case-study__cover figcaption,
+	.case-study__architecture figcaption,
+	.case-study__screenshots figcaption {
+		margin-top: 0.65rem;
+		color: var(--color-muted);
+		font-size: 0.9rem;
+		line-height: 1.5;
+	}
+
+	@media (max-width: 620px) {
+		.case-study__screenshots {
+			grid-template-columns: 1fr;
+		}
+
+		.case-study__facts {
+			grid-template-columns: 1fr;
+		}
+
+		.case-study h1 {
+			align-items: flex-start;
+			font-size: clamp(2.75rem, 14vw, 4.5rem);
+		}
+	}
+</style>

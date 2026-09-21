@@ -1,0 +1,223 @@
+---
+import { IconArrowUpRight } from '@tabler/icons-astro';
+import ExperienceItem from '../../../components/ExperienceItem.astro';
+import Layout from '../../../layouts/Layout.astro';
+import TechnologyStack from '../../../components/TechnologyStack.astro';
+import { getCopy } from '../../../data/site';
+import { getResumeDocuments } from '../../../lib/resume';
+
+const locale = 'en' as const;
+const copy = getCopy(locale);
+const resumeDocuments = getResumeDocuments(locale);
+---
+
+<Layout title={copy.about.metaTitle} description={copy.about.metaDescription} pagePath="about">
+	<main class="about-page page-shell">
+		<header class="page-intro">
+			<h1>{copy.about.title}</h1>
+			<p>{copy.about.intro}</p>
+		</header>
+
+		<section class="about-section" aria-labelledby="experience-title">
+			<h2 id="experience-title">{copy.about.experienceTitle}</h2>
+			<div class="experience-list">
+				{copy.about.experience.map((experience) => (
+					<ExperienceItem {...experience} />
+					))}
+				</div>
+			</section>
+
+		<section class="about-section skills-section" aria-labelledby="skills-title">
+			<h2 id="skills-title">{copy.about.skillsTitle}</h2>
+			<div class="skills-grid">
+				{copy.about.skills.map((group) => (
+					<article class="skill-group">
+						<h3>{group.title}</h3>
+						<TechnologyStack technologies={group.technologies} label={group.title} variant="chips" showIcons />
+					</article>
+				))}
+			</div>
+			<div class="supporting-skills">
+			<h3>{copy.about.supportingSkillsTitle}</h3>
+			<TechnologyStack technologies={copy.about.supportingSkills} label={copy.about.supportingSkillsTitle} />
+			</div>
+		</section>
+
+		<section class="about-section details-grid">
+			<article>
+				<h2>{copy.about.educationTitle}</h2>
+				<ul class="detail-list detail-list--education">
+					{copy.about.education.map((item) => (
+						<li>
+							<strong>{item.title}</strong>
+							<span>{item.institution}</span>
+							<time>{item.year}</time>
+						</li>
+					))}
+				</ul>
+			</article>
+			<article>
+				<h2>{copy.about.languagesTitle}</h2>
+				<ul class="detail-list detail-list--languages">
+					{copy.about.languages.map((item) => (
+						<li>
+							<strong>{item.name}</strong>
+							<span>{item.level}{item.note && ` · ${item.note}`}</span>
+						</li>
+					))}
+				</ul>
+				<nav class="about-links" aria-label="Résumé links">
+					{resumeDocuments.map((document) => (
+						<a href={document.href} target="_blank" rel="noopener noreferrer">{document.label} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>
+					))}
+				</nav>
+			</article>
+		</section>
+	</main>
+
+	<style>
+		.about-page {
+			padding-top: clamp(3rem, 8vw, 6rem);
+		}
+
+		.page-intro {
+			max-width: 47rem;
+			padding-bottom: var(--space-section);
+		}
+
+		.page-intro h1 {
+			margin: 0;
+			font-size: clamp(3rem, 7vw, 5.5rem);
+			letter-spacing: -0.06em;
+			line-height: 0.98;
+		}
+
+		.page-intro > p:last-child {
+			max-width: 40rem;
+			margin: 1.5rem 0 0;
+			font-size: clamp(1.05rem, 2vw, 1.25rem);
+		}
+
+		.about-section {
+			padding: var(--space-section) 0;
+			border-top: 1px solid var(--color-border);
+		}
+
+		.about-section h2 {
+			margin: 0 0 1.75rem;
+			font-size: clamp(1.7rem, 3vw, 2.5rem);
+			letter-spacing: -0.04em;
+			line-height: 1.15;
+		}
+
+		.experience-list {
+			max-width: 50rem;
+		}
+
+		.skills-grid {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 2rem clamp(2rem, 7vw, 6rem);
+		}
+
+		.skill-group h3 {
+			margin: 0 0 0.9rem;
+			font-size: 1.05rem;
+			font-weight: 600;
+		}
+
+		.supporting-skills {
+			margin-top: 2.5rem;
+			padding-top: 1.25rem;
+			border-top: 1px solid var(--color-border);
+		}
+
+		.supporting-skills h3 {
+			margin: 0 0 0.75rem;
+			color: var(--color-muted);
+			font-size: 0.9rem;
+			font-weight: 600;
+		}
+
+		.details-grid {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: clamp(2rem, 8vw, 7rem);
+		}
+
+		.detail-list {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			color: var(--color-muted);
+		}
+
+		.detail-list li {
+			display: grid;
+			gap: 0.2rem;
+			padding: 0.9rem 0;
+			border-top: 1px solid var(--color-border);
+		}
+
+		.detail-list li:first-child {
+			padding-top: 0;
+			border-top: 0;
+		}
+
+		.detail-list strong {
+			color: var(--color-ink);
+			font-size: 1rem;
+			font-weight: 600;
+		}
+
+		.detail-list time {
+			color: var(--color-muted);
+			font-family: var(--font-mono);
+			font-size: 0.8rem;
+			letter-spacing: 0.06em;
+		}
+
+		.detail-list--languages li {
+			grid-template-columns: 7rem minmax(0, 1fr);
+			align-items: baseline;
+		}
+
+		.about-links {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem 1.5rem;
+			margin-top: 2rem;
+		}
+
+		.about-links a {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.4rem;
+			font-weight: 700;
+			text-decoration: none;
+		}
+
+		.about-links a:hover,
+		.about-links a:focus-visible {
+			color: var(--color-accent);
+		}
+
+		@media (max-width: 650px) {
+			.details-grid {
+				display: block;
+			}
+
+			.skills-grid {
+				display: block;
+			}
+
+			.skill-group + .skill-group {
+				margin-top: 2rem;
+			}
+
+			.details-grid article + article {
+				margin-top: var(--space-section);
+			}
+		}
+	</style>
+</Layout>
