@@ -1,5 +1,5 @@
 ---
-import { IconArrowUpRight, IconBrandGithub } from '@tabler/icons-astro';
+import { IconBrandGithub } from '@tabler/icons-astro';
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import { getCopy, type Locale } from '../data/site';
@@ -14,6 +14,29 @@ const { project, locale } = Astro.props;
 const data = project.data;
 const copy = getCopy(locale);
 const status = copy.status[data.status];
+const architectureLabels = locale === 'ja' ? {
+	browser: 'ブラウザー',
+	browserDetails: 'Reactインターフェース · 地図と旅行条件',
+	application: 'アプリケーション層',
+	applicationDetails: 'React 19 · TypeScript · React Router · i18next · Leaflet · おすすめ機能',
+	supabase: 'Supabase',
+	supabaseDetails: 'アプリケーションデータ',
+	services: '外部サービス',
+	servicesDetails: 'Open-Meteo · Nominatim · Wikipediaデータ',
+	deployment: 'Cloudflare Pages',
+	deploymentDetails: '静的デプロイ',
+} : {
+	browser: 'Browser',
+	browserDetails: 'React interface · Maps and trip filters',
+	application: 'Application layer',
+	applicationDetails: 'React 19 · TypeScript · React Router · i18next · Leaflet · Recommendation flow',
+	supabase: 'Supabase',
+	supabaseDetails: 'Application data',
+	services: 'External services',
+	servicesDetails: 'Open-Meteo · Nominatim · Wikipedia data',
+	deployment: 'Cloudflare Pages',
+	deploymentDetails: 'Static deployment',
+};
 ---
 
 <article class="case-study reading-column">
@@ -43,9 +66,9 @@ const status = copy.status[data.status];
 		<TechnologyStack technologies={data.stack} label={copy.project.stack} variant="chips" />
 		{data.links && (
 			<nav class="case-study__links" aria-label={copy.project.links}>
-				{data.links.website && <a class="button-link" href={data.links.website} target="_blank" rel="noopener noreferrer">{copy.actions.liveProduct} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>}
-				{data.links.github && <a class="button-link button-link--quiet" href={data.links.github} target="_blank" rel="noopener noreferrer"><IconBrandGithub size={16} stroke={1.8} aria-hidden="true" />{copy.actions.github} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>}
-				{data.links.pullRequests?.map((url, index) => <a class="button-link button-link--quiet" href={url} target="_blank" rel="noopener noreferrer">{copy.actions.pullRequest}{data.links?.pullRequests && data.links.pullRequests.length > 1 ? ` ${index + 1}` : ''} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>)}
+				{data.links.website && <a class="button-link" href={data.links.website} target="_blank" rel="noopener noreferrer">{copy.actions.liveProduct} <span aria-hidden="true">↗</span></a>}
+				{data.links.github && <a class="button-link button-link--quiet" href={data.links.github} target="_blank" rel="noopener noreferrer"><IconBrandGithub size={16} stroke={1.8} aria-hidden="true" />{copy.actions.github} <span aria-hidden="true">↗</span></a>}
+				{data.links.pullRequests?.map((url, index) => <a class="button-link button-link--quiet" href={url} target="_blank" rel="noopener noreferrer">{copy.actions.pullRequest}{data.links?.pullRequests && data.links.pullRequests.length > 1 ? ` ${index + 1}` : ''} <span aria-hidden="true">↗</span></a>)}
 			</nav>
 		)}
 	</header>
@@ -59,8 +82,46 @@ const status = copy.status[data.status];
 
 	{data.architecture && (
 		<figure class="case-study__architecture">
-			<Image src={data.architecture.image} alt={data.architecture.alt} />
-			{data.architecture.caption && <figcaption>{data.architecture.caption}</figcaption>}
+			<div class="case-study__architecture-diagram">
+				<Image src={data.architecture.image} alt={data.architecture.alt} />
+			</div>
+			<div class="case-study__architecture-mobile" role="group" aria-label={data.architecture.alt}>
+				<div class="case-study__architecture-node">
+					<strong>{architectureLabels.browser}</strong>
+					<span>{architectureLabels.browserDetails}</span>
+				</div>
+				<span class="case-study__architecture-arrow" aria-hidden="true">↓</span>
+				<div class="case-study__architecture-node">
+					<strong>{architectureLabels.application}</strong>
+					<span>{architectureLabels.applicationDetails}</span>
+				</div>
+				<div class="case-study__architecture-services">
+					<p>{copy.project.architectureServices}</p>
+					<div class="case-study__architecture-node">
+						<strong>{architectureLabels.supabase}</strong>
+						<span>{architectureLabels.supabaseDetails}</span>
+					</div>
+					<div class="case-study__architecture-node">
+						<strong>{architectureLabels.services}</strong>
+						<span>{architectureLabels.servicesDetails}</span>
+					</div>
+				</div>
+				<div class="case-study__architecture-deployment">
+					<p>{copy.project.architectureDeployment}</p>
+					<div class="case-study__architecture-node">
+						<strong>{architectureLabels.deployment}</strong>
+						<span>{architectureLabels.deploymentDetails}</span>
+					</div>
+				</div>
+			</div>
+			{data.architecture.caption && (
+				<figcaption>
+					<span>{data.architecture.caption}</span>
+					<a href={data.architecture.image.src} target="_blank" rel="noopener noreferrer">
+						{copy.project.fullSizeDiagram} <span aria-hidden="true">↗</span>
+					</a>
+				</figcaption>
+			)}
 		</figure>
 	)}
 
@@ -173,6 +234,10 @@ const status = copy.status[data.status];
 		width: 100%;
 	}
 
+	.case-study__architecture-mobile {
+		display: none;
+	}
+
 	.case-study__screenshots {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -229,13 +294,109 @@ const status = copy.status[data.status];
 		line-height: 1.5;
 	}
 
+	.case-study__architecture figcaption a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		min-height: 2.75rem;
+		color: var(--color-ink);
+		font-weight: 700;
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+
+	.case-study__architecture figcaption a:hover,
+	.case-study__architecture figcaption a:focus-visible {
+		color: var(--color-accent);
+	}
+
+	.case-study__architecture-node {
+		display: grid;
+		gap: 0.25rem;
+		padding: 0.75rem;
+		border: 1px solid var(--color-border);
+		background: var(--color-paper);
+	}
+
+	.case-study__architecture-node strong {
+		font-size: 0.9rem;
+		line-height: 1.35;
+	}
+
+	.case-study__architecture-node span {
+		color: var(--color-muted);
+		font-size: 0.8rem;
+		line-height: 1.5;
+	}
+
+	.case-study__architecture-arrow {
+		color: var(--color-accent);
+		font-size: 1.25rem;
+		font-weight: 700;
+		line-height: 1;
+		text-align: center;
+	}
+
+	.case-study__architecture-services {
+		display: grid;
+		gap: 0.5rem;
+		margin-top: 0.75rem;
+	}
+
+	.case-study__architecture-services > p {
+		margin: 0;
+		color: var(--color-muted);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+	}
+
+	.case-study__architecture-deployment {
+		display: grid;
+		gap: 0.5rem;
+		margin-top: 0.75rem;
+	}
+
+	.case-study__architecture-deployment > p {
+		margin: 0;
+		color: var(--color-muted);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+	}
+
 	@media (max-width: 620px) {
+		.case-study__header {
+			padding-bottom: 2rem;
+		}
+
+		.case-study__content {
+			padding-block: 2rem;
+		}
+
+		.case-study__architecture-diagram {
+			display: none;
+		}
+
+		.case-study__architecture-mobile {
+			display: block;
+		}
+
+		.case-study__architecture figcaption {
+			display: grid;
+			gap: 0.25rem;
+		}
+
 		.case-study__screenshots {
 			grid-template-columns: 1fr;
 		}
 
 		.case-study__facts {
 			grid-template-columns: 1fr;
+		}
+
+		.case-study__content :global(h2) {
+			margin-top: 2.5rem;
 		}
 
 		.case-study h1 {
