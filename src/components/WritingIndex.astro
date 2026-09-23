@@ -1,5 +1,4 @@
 ---
-import { IconArrowUpRight } from '@tabler/icons-astro';
 import { getCopy, type Locale } from '../data/site';
 import Layout from '../layouts/Layout.astro';
 import { localizedUrl } from '../lib/urls';
@@ -23,14 +22,14 @@ const copy = getCopy(locale);
 			<p class="eyebrow">{copy.writing.emptyTitle}</p>
 			<h2 id="empty-title">{copy.writing.emptyText}</h2>
 			<a class="button-link button-link--quiet" href={localizedUrl(locale, 'projects')} data-astro-prefetch>
-				{copy.actions.viewCaseStudy} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" />
+				{copy.actions.exploreProjects} <span aria-hidden="true">→</span>
 			</a>
 		</section>
 	</main>
 
 	<style>
 		.writing-page {
-			padding-top: clamp(3rem, 8vw, 6rem);
+			padding-top: clamp(2.5rem, 8vw, 6rem);
 		}
 
 		.page-intro {

@@ -4,10 +4,11 @@ interface Props {
 	role: string;
 	period: string;
 	description: string;
+	achievements?: readonly string[];
 	compact?: boolean;
 }
 
-const { company, role, period, description, compact = false } = Astro.props;
+const { company, role, period, description, achievements = [], compact = false } = Astro.props;
 ---
 
 <article class:list={['experience-item', { 'experience-item--compact': compact }]}>
@@ -17,6 +18,11 @@ const { company, role, period, description, compact = false } = Astro.props;
 	</div>
 	<h3>{role}</h3>
 	<p>{description}</p>
+	{!compact && achievements.length > 0 && (
+		<ul class="experience-item__achievements">
+			{achievements.map((achievement) => <li>{achievement}</li>)}
+		</ul>
+	)}
 </article>
 
 <style>
@@ -47,6 +53,18 @@ const { company, role, period, description, compact = false } = Astro.props;
 		max-width: 44rem;
 		margin: 0;
 		color: var(--color-muted);
+	}
+
+	.experience-item__achievements {
+		display: grid;
+		gap: 0.4rem;
+		margin: 0.9rem 0 0;
+		padding-left: 1.2rem;
+		color: var(--color-muted);
+	}
+
+	.experience-item__achievements li::marker {
+		color: var(--color-accent);
 	}
 
 	.experience-item--compact {

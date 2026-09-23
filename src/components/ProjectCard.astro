@@ -1,5 +1,5 @@
 ---
-import { IconArrowUpRight, IconBrandGithub } from '@tabler/icons-astro';
+import { IconBrandGithub } from '@tabler/icons-astro';
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import { getCopy, type Locale } from '../data/site';
@@ -40,14 +40,14 @@ const status = copy.status[data.status];
 			<TechnologyStack technologies={data.stack.slice(0, 5)} label={copy.project.stack} />
 		</div>
 		<div class="project-card__links">
-			<a class="button-link" href={href} data-astro-prefetch>{copy.actions.viewCaseStudy} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>
+			<a class="button-link" href={href} data-astro-prefetch>{copy.actions.viewCaseStudy} <span aria-hidden="true">→</span></a>
 			{data.links?.website && (
-				<a class="button-link button-link--quiet" href={data.links.website} target="_blank" rel="noopener noreferrer">{copy.actions.liveProduct} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>
+				<a class="button-link button-link--quiet" href={data.links.website} target="_blank" rel="noopener noreferrer">{copy.actions.liveProduct} <span aria-hidden="true">↗</span></a>
 			)}
 			{data.links?.github && (
 				<a class="button-link button-link--quiet" href={data.links.github} target="_blank" rel="noopener noreferrer">
 					<IconBrandGithub size={16} stroke={1.8} aria-hidden="true" />
-					{copy.actions.github} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" />
+					{copy.actions.github} <span aria-hidden="true">↗</span>
 				</a>
 			)}
 		</div>
