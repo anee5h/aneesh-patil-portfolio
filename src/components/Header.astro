@@ -183,47 +183,30 @@ const displayName = locale === 'ja' ? 'パティルアニシュ' : 'Aneesh Patil
 
 	@media (max-width: 650px) {
 		.site-header {
-			display: flex;
-			align-items: center;
-			flex-wrap: wrap;
-			gap: 1rem;
-			padding: 1.25rem 0;
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+			column-gap: 0.5rem;
+			row-gap: 0.65rem;
+			padding: 0.75rem 0;
 		}
 
 		.site-header > a {
-			flex: 1 1 auto;
+			min-width: 0;
 		}
 
 		.site-header nav[aria-label='Primary navigation'] {
-			order: 3;
+			grid-column: 1 / -1;
+			grid-row: 2;
 			width: 100%;
 			justify-self: auto;
-			flex-wrap: wrap;
+			flex-wrap: nowrap;
+			gap: clamp(0.75rem, 5vw, 1.25rem);
 		}
 
 		.site-header__tools {
-			order: 2;
-			margin-left: auto;
-		}
-	}
-
-	@media (max-width: 400px) {
-		.site-header {
-			display: block;
-		}
-
-		.site-header > a {
-			display: block;
-			margin-bottom: 1rem;
-		}
-
-		.site-header__tools {
-			margin: 0 0 1rem;
-			justify-content: flex-start;
-		}
-
-		.site-header nav[aria-label='Primary navigation'] {
-			gap: 0.75rem;
+			grid-column: 2;
+			grid-row: 1;
+			gap: 0.5rem;
 		}
 	}
 </style>

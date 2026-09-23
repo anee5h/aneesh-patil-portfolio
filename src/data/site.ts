@@ -17,7 +17,8 @@ const copy = {
 			about: 'About',
 		},
 		actions: {
-			viewCaseStudy: 'Case study',
+			viewCaseStudy: 'View case study',
+			exploreProjects: 'Explore my projects',
 			github: 'GitHub',
 			liveProduct: 'Live product',
 			pullRequest: 'Pull requests',
@@ -83,12 +84,10 @@ const copy = {
 			skillsTitle: 'Tools & capabilities',
 			skills: [
 				{ title: 'Frontend', technologies: ['React', 'TypeScript', 'JavaScript', 'Astro'] },
-				{ title: 'Backend & APIs', technologies: ['Node.js', 'Python', 'PHP', 'REST APIs'] },
-				{ title: 'Cloud & data', technologies: ['AWS Lambda', 'API Gateway', 'SQL', 'Supabase', 'Cloudflare Pages'] },
-				{ title: 'Quality & testing', technologies: ['Playwright', 'Vitest', 'Jest'] },
+				{ title: 'Backend & APIs', technologies: ['Node.js', 'Python', 'REST APIs'] },
+				{ title: 'Cloud & Data', technologies: ['AWS', 'Supabase', 'SQL', 'Cloudflare'] },
+				{ title: 'Testing & Quality', technologies: ['Playwright', 'Vitest', 'Jest'] },
 			] as const,
-			supportingSkillsTitle: 'Also used',
-			supportingSkills: ['Zendesk API', 'Git', 'GitHub', 'GitLab', 'Linear', 'Backlog'],
 		},
 		resumePage: {
 			metaTitle: 'Résumé | Aneesh Patil',
@@ -114,6 +113,9 @@ const copy = {
 			stack: 'Stack',
 			links: 'Links',
 			status: 'Status',
+			architectureServices: 'Data & external services',
+			architectureDeployment: 'Deployment',
+			fullSizeDiagram: 'View the diagram at full size',
 		},
 		notFound: {
 			title: 'Page not found',
@@ -128,7 +130,8 @@ const copy = {
 			about: 'プロフィール',
 		},
 		actions: {
-			viewCaseStudy: 'ケーススタディ',
+			viewCaseStudy: 'ケーススタディを見る',
+			exploreProjects: 'プロジェクトを見る',
 			github: 'GitHub',
 			liveProduct: 'プロダクトを見る',
 			pullRequest: 'プルリクエスト',
@@ -194,12 +197,10 @@ const copy = {
 			skillsTitle: '技術・対応領域',
 			skills: [
 				{ title: 'フロントエンド', technologies: ['React', 'TypeScript', 'JavaScript', 'Astro'] },
-				{ title: 'バックエンド・API', technologies: ['Node.js', 'Python', 'PHP', 'REST API'] },
-				{ title: 'クラウド・データ', technologies: ['AWS Lambda', 'API Gateway', 'SQL', 'Supabase', 'Cloudflare Pages'] },
-				{ title: '品質・テスト', technologies: ['Playwright', 'Vitest', 'Jest'] },
+				{ title: 'バックエンド・API', technologies: ['Node.js', 'Python', 'REST API'] },
+				{ title: 'クラウド・データ', technologies: ['AWS', 'Supabase', 'SQL', 'Cloudflare'] },
+				{ title: 'テスト・品質', technologies: ['Playwright', 'Vitest', 'Jest'] },
 			] as const,
-			supportingSkillsTitle: 'その他の経験',
-			supportingSkills: ['Zendesk API', 'Git', 'GitHub', 'GitLab', 'Linear', 'Backlog'],
 		},
 		resumePage: {
 			metaTitle: '職務経歴書・履歴書 | パティルアニシュ',
@@ -225,6 +226,9 @@ const copy = {
 			stack: '技術',
 			links: 'リンク',
 			status: 'ステータス',
+			architectureServices: 'データ・外部サービス',
+			architectureDeployment: 'デプロイ先',
+			fullSizeDiagram: '構成図を原寸大で見る',
 		},
 		notFound: {
 			title: 'ページが見つかりません',

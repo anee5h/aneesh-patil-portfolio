@@ -1,5 +1,4 @@
 ---
-import { IconArrowUpRight } from '@tabler/icons-astro';
 import ExperienceItem from '../../../components/ExperienceItem.astro';
 import Layout from '../../../layouts/Layout.astro';
 import TechnologyStack from '../../../components/TechnologyStack.astro';
@@ -33,13 +32,9 @@ const resumeDocuments = getResumeDocuments(locale);
 				{copy.about.skills.map((group) => (
 					<article class="skill-group">
 						<h3>{group.title}</h3>
-						<TechnologyStack technologies={group.technologies} label={group.title} variant="chips" showIcons />
+						<TechnologyStack technologies={group.technologies} label={group.title} variant="chips" />
 					</article>
 				))}
-			</div>
-			<div class="supporting-skills">
-			<h3>{copy.about.supportingSkillsTitle}</h3>
-			<TechnologyStack technologies={copy.about.supportingSkills} label={copy.about.supportingSkillsTitle} />
 			</div>
 		</section>
 
@@ -66,18 +61,20 @@ const resumeDocuments = getResumeDocuments(locale);
 						</li>
 					))}
 				</ul>
-				<nav class="about-links" aria-label="Résumé links">
-					{resumeDocuments.map((document) => (
-						<a href={document.href} target="_blank" rel="noopener noreferrer">{document.label} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>
-					))}
-				</nav>
+				{resumeDocuments.length > 0 && (
+					<nav class="about-links" aria-label="Résumé links">
+						{resumeDocuments.map((document) => (
+							<a href={document.href} target="_blank" rel="noopener noreferrer">{document.label}</a>
+						))}
+					</nav>
+				)}
 			</article>
 		</section>
 	</main>
 
 	<style>
 		.about-page {
-			padding-top: clamp(3rem, 8vw, 6rem);
+			padding-top: clamp(2.5rem, 8vw, 6rem);
 		}
 
 		.page-intro {
@@ -123,19 +120,6 @@ const resumeDocuments = getResumeDocuments(locale);
 		.skill-group h3 {
 			margin: 0 0 0.9rem;
 			font-size: 1.05rem;
-			font-weight: 600;
-		}
-
-		.supporting-skills {
-			margin-top: 2.5rem;
-			padding-top: 1.25rem;
-			border-top: 1px solid var(--color-border);
-		}
-
-		.supporting-skills h3 {
-			margin: 0 0 0.75rem;
-			color: var(--color-muted);
-			font-size: 0.9rem;
 			font-weight: 600;
 		}
 

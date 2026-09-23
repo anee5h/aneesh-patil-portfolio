@@ -1,6 +1,5 @@
 ---
 import { render, type CollectionEntry } from 'astro:content';
-import { IconArrowUpRight } from '@tabler/icons-astro';
 import ProjectCaseStudy from '../../../components/ProjectCaseStudy.astro';
 import Layout from '../../../layouts/Layout.astro';
 import { getCopy } from '../../../data/site';
@@ -30,12 +29,18 @@ const { Content } = await render(project);
 			<Content />
 		</ProjectCaseStudy>
 		<div class="case-study-footer reading-column">
-			<a href={localizedUrl(locale, 'projects')}>{copy.actions.backToWork} <IconArrowUpRight size={16} stroke={1.8} aria-hidden="true" /></a>
+			<a href={localizedUrl(locale, 'projects')}>{copy.actions.backToWork} <span aria-hidden="true">→</span></a>
 		</div>
 	</main>
 	<style>
 		.case-study-footer {
 			padding-bottom: 2rem;
+		}
+
+		@media (max-width: 620px) {
+			.case-study-footer {
+				padding-bottom: 1rem;
+			}
 		}
 	</style>
 </Layout>

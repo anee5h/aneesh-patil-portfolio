@@ -10,11 +10,11 @@ const displayName = locale === 'ja' ? 'パティルアニシュ' : 'Aneesh Patil
 	<nav aria-label={locale === 'ja' ? 'プロフィールリンク' : 'Professional links'}>
 		<a href={siteLinks.github} target="_blank" rel="noopener noreferrer">
 			<IconBrandGithub size={16} stroke={1.8} aria-hidden="true" />
-			GitHub
+			GitHub <span aria-hidden="true">↗</span>
 		</a>
 		<a href={siteLinks.linkedin} target="_blank" rel="noopener noreferrer">
 			<IconBrandLinkedin size={16} stroke={1.8} aria-hidden="true" />
-			LinkedIn
+			LinkedIn <span aria-hidden="true">↗</span>
 		</a>
 		<a href={siteLinks.email}>
 			<IconMail size={16} stroke={1.8} aria-hidden="true" />
@@ -31,7 +31,7 @@ const displayName = locale === 'ja' ? 'パティルアニシュ' : 'Aneesh Patil
 	.site-footer {
 		width: min(calc(100% - 2rem), 920px);
 		margin: 0 auto;
-		padding: 3rem 0 2rem;
+		padding: clamp(2rem, 6vw, 3rem) 0 2rem;
 		border-top: 1px solid var(--color-border);
 	}
 

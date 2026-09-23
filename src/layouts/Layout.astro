@@ -61,12 +61,17 @@ const socialImage = ogImage ? new URL(ogImage, baseUrl) : undefined;
 				if (window.__anee5hSiteInitialized) return;
 				window.__anee5hSiteInitialized = true;
 
-				function readTheme() {
+				function readSavedTheme() {
 					try {
 						const savedTheme = localStorage.getItem('theme');
 						if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
 					} catch {}
+					return null;
+				}
 
+				function readTheme() {
+					const savedTheme = readSavedTheme();
+					if (savedTheme) return savedTheme;
 					return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
 				}
 
@@ -75,6 +80,25 @@ const socialImage = ogImage ? new URL(ogImage, baseUrl) : undefined;
 				}
 
 				setTheme(readTheme());
+				let userSetTheme = false;
+				const colorScheme = window.matchMedia?.('(prefers-color-scheme: light)');
+
+				function updateThemeToggle() {
+					const themeToggle = document.querySelector('[data-theme-toggle]');
+					if (!themeToggle) return;
+					const isLight = document.documentElement.dataset.theme === 'light';
+					themeToggle.setAttribute('aria-pressed', String(isLight));
+					themeToggle.setAttribute(
+						'aria-label',
+						isLight ? themeToggle.dataset.darkLabel : themeToggle.dataset.lightLabel,
+					);
+				}
+
+				colorScheme?.addEventListener?.('change', (event) => {
+					if (userSetTheme || readSavedTheme()) return;
+					setTheme(event.matches ? 'light' : 'dark');
+					updateThemeToggle();
+				});
 
 				document.addEventListener('astro:before-swap', (event) => {
 					if (event.newDocument?.documentElement) setTheme(readTheme(), event.newDocument.documentElement);
@@ -83,20 +107,12 @@ const socialImage = ogImage ? new URL(ogImage, baseUrl) : undefined;
 				document.addEventListener('astro:page-load', () => {
 					const themeToggle = document.querySelector('[data-theme-toggle]');
 					if (themeToggle && themeToggle.dataset.initialized !== 'true') {
-						const updateToggle = () => {
-							const isLight = document.documentElement.dataset.theme === 'light';
-							themeToggle.setAttribute('aria-pressed', String(isLight));
-							themeToggle.setAttribute(
-								'aria-label',
-								isLight ? themeToggle.dataset.darkLabel : themeToggle.dataset.lightLabel,
-							);
-						};
-
-						updateToggle();
+						updateThemeToggle();
 						themeToggle.addEventListener('click', () => {
+							userSetTheme = true;
 							const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
 							setTheme(nextTheme);
-							updateToggle();
+							updateThemeToggle();
 							try {
 								localStorage.setItem('theme', nextTheme);
 							} catch {}
@@ -161,12 +177,3 @@ const socialImage = ogImage ? new URL(ogImage, baseUrl) : undefined;
 		<Footer />
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
