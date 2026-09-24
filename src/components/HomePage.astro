@@ -1,5 +1,5 @@
 ---
-import { IconBrandGithub, IconBrandLinkedin, IconMail } from '@tabler/icons-astro';
+import { IconBrandGithub, IconBrandLinkedin, IconCheck, IconCopy, IconMail } from '@tabler/icons-astro';
 import ExperienceItem from './ExperienceItem.astro';
 import ProjectCard from './ProjectCard.astro';
 import TechnologyStack from './TechnologyStack.astro';
@@ -16,6 +16,9 @@ const { locale } = Astro.props;
 const copy = getCopy(locale);
 const featuredProject = await getFeaturedProject(locale);
 const experience = copy.about.experience.slice(0, 2);
+const emailAddress = siteLinks.email.replace('mailto:', '');
+const copyEmailLabel = locale === 'ja' ? 'メールアドレスをコピー' : 'Copy email address';
+const emailCopiedLabel = locale === 'ja' ? 'メールアドレスをコピーしました' : 'Email address copied';
 ---
 
 <Layout title={copy.home.metaTitle} description={copy.home.metaDescription}>
@@ -34,17 +37,30 @@ const experience = copy.about.experience.slice(0, 2);
 
 			<aside class="home-links">
 				<nav aria-label={locale === 'ja' ? '連絡先とプロフィールリンク' : 'Contact and professional links'}>
-					<a href={siteLinks.email}>
-						<IconMail size={17} stroke={1.8} aria-hidden="true" />
-						hello@anee5h.com
-					</a>
+					<div class="home-links__email">
+						<a href={siteLinks.email}>
+							<IconMail size={17} stroke={1.8} aria-hidden="true" />
+							{emailAddress}
+						</a>
+						<button
+							class="email-copy"
+							type="button"
+							aria-label={copyEmailLabel}
+							data-copy-email={emailAddress}
+							data-copy-label={copyEmailLabel}
+							data-copied-label={emailCopiedLabel}
+						>
+							<IconCopy class="email-copy__copy" size={17} stroke={1.8} aria-hidden="true" />
+							<IconCheck class="email-copy__check" size={17} stroke={1.8} aria-hidden="true" />
+						</button>
+					</div>
 					<a href={siteLinks.linkedin} target="_blank" rel="noopener noreferrer">
 						<IconBrandLinkedin size={17} stroke={1.8} aria-hidden="true" />
-						LinkedIn <span aria-hidden="true">↗</span>
+						LinkedIn
 					</a>
 					<a href={siteLinks.github} target="_blank" rel="noopener noreferrer">
 						<IconBrandGithub size={17} stroke={1.8} aria-hidden="true" />
-						{copy.actions.github} <span aria-hidden="true">↗</span>
+						{copy.actions.github}
 					</a>
 				</nav>
 				<div class="home-availability">
@@ -56,8 +72,7 @@ const experience = copy.about.experience.slice(0, 2);
 
 		<section class="home-section page-shell" aria-labelledby="experience-preview-title">
 			<header class="section-header">
-				<p class="eyebrow">{copy.home.experienceTitle}</p>
-				<h2 id="experience-preview-title">{copy.home.experienceText}</h2>
+				<h2 id="experience-preview-title">{copy.home.experienceTitle}</h2>
 			</header>
 			<div class="experience-preview">
 				{experience.map((item) => <ExperienceItem {...item} compact />)}
@@ -68,10 +83,9 @@ const experience = copy.about.experience.slice(0, 2);
 		</section>
 
 		{featuredProject && (
-			<section class="home-section page-shell" aria-label={copy.nav.work}>
+			<section class="home-section page-shell" aria-labelledby="project-preview-title">
 				<header class="section-header">
-					<p class="eyebrow">{copy.home.projectEyebrow}</p>
-					<h2>{copy.home.projectIntro}</h2>
+					<h2 id="project-preview-title">{copy.home.projectTitle}</h2>
 				</header>
 				<ProjectCard project={featuredProject} locale={locale} featured />
 				<a class="text-link project-preview-link" href={localizedUrl(locale, 'projects')} data-astro-prefetch>
@@ -82,8 +96,7 @@ const experience = copy.about.experience.slice(0, 2);
 
 		<section class="home-section page-shell home-writing" aria-labelledby="writing-preview-title">
 			<header class="section-header">
-				<p class="eyebrow">{copy.home.writingTitle}</p>
-				<h2 id="writing-preview-title">{copy.home.writingText}</h2>
+				<h2 id="writing-preview-title">{copy.home.writingTitle}</h2>
 			</header>
 			<p class="home-writing__empty">
 				{copy.home.writingEmpty}
@@ -139,7 +152,7 @@ const experience = copy.about.experience.slice(0, 2);
 	}
 
 	.home-links {
-		align-self: start;
+		align-self: center;
 		padding-left: 1.25rem;
 		border-left: 1px solid var(--color-border);
 	}
@@ -158,6 +171,54 @@ const experience = copy.about.experience.slice(0, 2);
 		gap: 0.4rem;
 		font-weight: 700;
 		text-decoration: none;
+	}
+
+	.home-links__email {
+		display: inline-flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: 0.5rem;
+		white-space: nowrap;
+	}
+
+	.home-links__email > a {
+		flex: 0 0 auto;
+		white-space: nowrap;
+	}
+
+	.email-copy {
+		display: inline-flex;
+		flex: 0 0 1.75rem;
+		width: 1.75rem;
+		height: 1.75rem;
+		padding: 0;
+		align-items: center;
+		justify-content: center;
+		appearance: none;
+		border: 0;
+		border-radius: 50%;
+		background: none;
+		color: var(--color-muted);
+		cursor: pointer;
+	}
+
+	.email-copy:hover,
+	.email-copy:focus-visible {
+		color: var(--color-accent);
+	}
+
+	.email-copy:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 2px;
+	}
+
+	.email-copy__check,
+	.email-copy[data-copied='true'] .email-copy__copy {
+		display: none;
+	}
+
+	.email-copy[data-copied='true'] .email-copy__check {
+		display: block;
 	}
 
 	.home-links a:hover,
@@ -272,3 +333,22 @@ const experience = copy.about.experience.slice(0, 2);
 		line-height: 1.85;
 	}
 </style>
+
+<script>
+	document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((button) => {
+		button.addEventListener('click', async () => {
+			const email = button.dataset.copyEmail;
+			if (!email || !navigator.clipboard) return;
+
+			try {
+				await navigator.clipboard.writeText(email);
+				button.dataset.copied = 'true';
+				button.setAttribute('aria-label', button.dataset.copiedLabel ?? 'Email address copied');
+				window.setTimeout(() => {
+					delete button.dataset.copied;
+					button.setAttribute('aria-label', button.dataset.copyLabel ?? 'Copy email address');
+				}, 1500);
+			} catch {}
+		});
+	});
+</script>

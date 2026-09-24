@@ -14,7 +14,9 @@ const resumeDocuments = getResumeDocuments(locale);
 	<main class="about-page page-shell">
 		<header class="page-intro">
 			<h1>{copy.about.title}</h1>
-			<p>{copy.about.intro}</p>
+			<div class="page-intro__body">
+				{copy.about.intro.map((paragraph) => <p>{paragraph}</p>)}
+			</div>
 		</header>
 
 		<section class="about-section" aria-labelledby="experience-title">
@@ -78,22 +80,31 @@ const resumeDocuments = getResumeDocuments(locale);
 		}
 
 		.page-intro {
-			max-width: 47rem;
+			max-width: none;
 			padding-bottom: var(--space-section);
 		}
 
 		.page-intro h1 {
 			margin: 0;
-			font-size: clamp(3rem, 7vw, 5.5rem);
+			font-size: clamp(2.5rem, 5.5vw, 4.5rem);
 			letter-spacing: -0.06em;
 			line-height: 1.05;
 		}
 
-		.page-intro > p:last-child {
-			max-width: 40rem;
-			margin: 1.5rem 0 0;
-			font-size: clamp(1.05rem, 2vw, 1.25rem);
-			line-height: 1.8;
+		.page-intro__body {
+			max-width: none;
+			margin-top: 1.5rem;
+			font-size: clamp(1rem, 1.5vw, 1.125rem);
+			line-height: 1.7;
+			text-align: justify;
+		}
+
+		.page-intro__body p {
+			margin: 0;
+		}
+
+		.page-intro__body p + p {
+			margin-top: 1rem;
 		}
 
 		.about-section {

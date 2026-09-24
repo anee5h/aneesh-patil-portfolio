@@ -13,7 +13,6 @@ const projects = await getPublicProjects(locale);
 	<main class="work-page page-shell">
 		<header class="page-intro">
 			<h1>{copy.work.title}</h1>
-			<p>{copy.work.intro}</p>
 		</header>
 
 		<section class="work-list" aria-label={copy.work.title}>
@@ -30,7 +29,7 @@ const projects = await getPublicProjects(locale);
 
 		.page-intro {
 			max-width: 46rem;
-			padding-bottom: var(--space-section);
+			padding-bottom: clamp(2rem, 5vw, 3rem);
 		}
 
 		.page-intro h1 {
@@ -38,12 +37,6 @@ const projects = await getPublicProjects(locale);
 			font-size: clamp(3rem, 7vw, 5.5rem);
 			letter-spacing: -0.06em;
 			line-height: 0.95;
-		}
-
-		.page-intro > p:last-child {
-			max-width: 38rem;
-			margin: 1.5rem 0 0;
-			font-size: clamp(1.05rem, 2vw, 1.25rem);
 		}
 
 		.work-list {
