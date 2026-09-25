@@ -35,8 +35,8 @@ const copy = {
 			eyebrow: 'Software engineer / Yokohama, Japan',
 			title: 'Aneesh Patil',
 			intro: [
-				"I'm a software engineer based in Yokohama, Japan. I started out analyzing data for Amazon Japan's Kindle business, then worked on web systems for the automotive recycling industry. Now I build customer support applications, API integrations, and cloud services.",
-				'I enjoy working across the stack, from interface design to the systems behind it. I like figuring out how the pieces fit together, working through messy real-world data, and making software reliable after launch.',
+				"I'm a software engineer based in Yokohama, Japan. I build web applications, API integrations, and cloud services.",
+				'I enjoy working across the stack, especially untangling data issues and keeping systems reliable after release.',
 			],
 			stack: 'React · TypeScript · Node.js · Python · AWS',
 			availabilityTitle: 'Open to software engineering opportunities',
@@ -145,11 +145,11 @@ const copy = {
 		home: {
 			metaTitle: 'パティルアニシュ | 日本のソフトウェアエンジニア',
 			metaDescription: 'フロントエンド、バックエンド、クラウドまで、Webアプリケーションの開発と保守に携わるパティルアニシュの職務経歴です。',
-			eyebrow: 'Software engineer / 横浜・日本',
+			eyebrow: 'ソフトウェアエンジニア / 横浜・日本',
 			title: 'パティルアニシュ',
 			intro: [
-				'横浜を拠点に活動するソフトウェアエンジニアです。Amazon JapanのKindle部門でデータ分析を担当した後、自動車リサイクル業界のWebシステム開発に携わり、現在はカスタマーサポート向けアプリケーションやAPI連携、クラウドサービスを開発しています。',
-				'フロントエンドからバックエンドまで、全体を見ながら開発するのが好きです。画面の使いやすさを考え、実際のデータの複雑さに向き合い、リリース後も信頼して使えるソフトウェアを作ることを大切にしています。',
+				'横浜を拠点に活動するソフトウェアエンジニアです。WebアプリケーションやAPI連携、クラウドサービスを開発しています。',
+				'フロントエンドからバックエンドまで幅広く関わり、データの課題を解決しながら、リリース後も安定して使えるシステムを作るのが好きです。',
 			],
 			stack: 'React · TypeScript · Node.js · Python · AWS',
 			availabilityTitle: 'ソフトウェアエンジニアとしての新しい機会を探しています。',
