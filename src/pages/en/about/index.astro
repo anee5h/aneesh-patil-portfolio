@@ -64,7 +64,7 @@ const resumeDocuments = getResumeDocuments(locale);
 					))}
 				</ul>
 				{resumeDocuments.length > 0 && (
-					<nav class="about-links" aria-label="Résumé links">
+					<nav class="about-links" aria-label="CV and résumé links">
 						{resumeDocuments.map((document) => (
 							<a href={document.href} target="_blank" rel="noopener noreferrer">{document.label}</a>
 						))}

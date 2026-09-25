@@ -204,9 +204,28 @@ const architectureLabels = locale === 'ja' ? {
 	.case-study__links {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.65rem;
-		margin: 0;
+		gap: 0.5rem;
+		margin: 1rem 0 0;
 		padding: 0;
+	}
+
+	.case-study__links .button-link {
+		padding-inline: 0.85rem;
+		font-size: 0.9rem;
+		white-space: nowrap;
+	}
+
+	.case-study__links .button-link:not(.button-link--quiet) {
+		border-color: var(--color-ink);
+		background: var(--color-ink);
+		color: var(--color-paper);
+	}
+
+	.case-study__links .button-link:not(.button-link--quiet):hover,
+	.case-study__links .button-link:not(.button-link--quiet):focus-visible {
+		border-color: var(--color-accent);
+		background: var(--color-accent);
+		color: #1b1d1a;
 	}
 
 	.case-study__content {

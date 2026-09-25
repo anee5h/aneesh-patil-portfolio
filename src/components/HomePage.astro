@@ -6,6 +6,7 @@ import TechnologyStack from './TechnologyStack.astro';
 import Layout from '../layouts/Layout.astro';
 import { getCopy, type Locale, siteLinks } from '../data/site';
 import { getFeaturedProject } from '../lib/projects';
+import { getResumeDocuments } from '../lib/resume';
 import { localizedUrl } from '../lib/urls';
 
 interface Props {
@@ -16,6 +17,16 @@ const { locale } = Astro.props;
 const copy = getCopy(locale);
 const featuredProject = await getFeaturedProject(locale);
 const experience = copy.about.experience.slice(0, 2);
+const homeDocumentLabels = {
+	cv: 'CV (English)',
+	resume: 'Résumé (English)',
+	rirekisho: '履歴書（日本語）',
+	shokumukeirekisho: '職務経歴書（日本語）',
+};
+const homeDocuments = getResumeDocuments(locale).map((document) => ({
+	...document,
+	label: homeDocumentLabels[document.key],
+}));
 const emailAddress = siteLinks.email.replace('mailto:', '');
 const copyEmailLabel = locale === 'ja' ? 'メールアドレスをコピー' : 'Copy email address';
 const emailCopiedLabel = locale === 'ja' ? 'メールアドレスをコピーしました' : 'Email address copied';
@@ -36,7 +47,7 @@ const emailCopiedLabel = locale === 'ja' ? 'メールアドレスをコピーし
 			</div>
 
 			<aside class="home-links">
-				<nav aria-label={locale === 'ja' ? '連絡先とプロフィールリンク' : 'Contact and professional links'}>
+				<nav aria-label={locale === 'ja' ? '連絡先と書類のリンク' : 'Contact and document links'}>
 					<div class="home-links__email">
 						<a href={siteLinks.email}>
 							<IconMail size={17} stroke={1.8} aria-hidden="true" />
@@ -62,6 +73,11 @@ const emailCopiedLabel = locale === 'ja' ? 'メールアドレスをコピーし
 						<IconBrandGithub size={17} stroke={1.8} aria-hidden="true" />
 						{copy.actions.github}
 					</a>
+					<div class="home-links__documents">
+						{homeDocuments.map((document) => (
+							<a href={document.href}>{document.label}</a>
+						))}
+					</div>
 				</nav>
 				<div class="home-availability">
 					<p>{copy.home.availabilityTitle}</p>
@@ -164,7 +180,30 @@ const emailCopiedLabel = locale === 'ja' ? 'メールアドレスをコピーし
 		gap: 0.75rem;
 	}
 
-	.home-links a,
+	.home-links__documents {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.35rem;
+		margin-top: 0.25rem;
+		padding-top: 0.5rem;
+		border-top: 1px solid var(--color-border);
+	}
+
+	.home-links__documents a {
+		display: inline-flex;
+		font-size: 0.9rem;
+		font-weight: 600;
+	}
+
+	.home-links__documents a:hover,
+	.home-links__documents a:focus-visible {
+		color: var(--color-accent);
+		text-decoration-color: currentColor;
+	}
+
+	.home-links nav > a,
+	.home-links__email > a,
 	.text-link {
 		display: inline-flex;
 		align-items: center;
@@ -221,8 +260,10 @@ const emailCopiedLabel = locale === 'ja' ? 'メールアドレスをコピーし
 		display: block;
 	}
 
-	.home-links a:hover,
-	.home-links a:focus-visible,
+	.home-links nav > a:hover,
+	.home-links nav > a:focus-visible,
+	.home-links__email > a:hover,
+	.home-links__email > a:focus-visible,
 	.text-link:hover,
 	.text-link:focus-visible {
 		color: var(--color-accent);

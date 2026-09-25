@@ -64,7 +64,7 @@ const resumeDocuments = getResumeDocuments(locale);
 					))}
 				</ul>
 				{resumeDocuments.length > 0 && (
-					<nav class="about-links" aria-label="履歴書リンク">
+					<nav class="about-links" aria-label="応募書類リンク">
 						{resumeDocuments.map((document) => (
 							<a href={document.href} target="_blank" rel="noopener noreferrer">{document.label}</a>
 						))}
