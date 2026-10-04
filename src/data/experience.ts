@@ -1,14 +1,14 @@
 export const experienceByLocale = {
 	en: [
 		{
-			company: 'eclect, Inc.',
+			company: 'Eclect Co., Ltd.',
 			role: 'Software Engineer (Fullstack)',
 			period: '2024.06 - present',
 			description: 'Develop and maintain Zendesk-based web applications with React, TypeScript, Node.js, Python, REST APIs, AWS Lambda, and API Gateway.',
 			achievements: ['Delivered more than 12 web applications.', 'Implemented over 20 improvements and fixes.', 'Migrated more than 10,000 records.'],
 		},
 		{
-			company: 'SEAPARTS Co., Ltd.',
+			company: 'Seaparts Co., Ltd.',
 			role: 'System Engineer',
 			period: '2022.04 - 2024.05',
 			description: 'Contributed to PHP migration, E2E test automation, and responsive web development on a six-person system integration project. Also handled requirements clarification, design, progress tracking, and quality management.',
