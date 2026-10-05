@@ -14,7 +14,9 @@ export default defineConfig({
 	integrations: [sitemap({
 		filter: (page) => {
 			const pathname = new URL(page).pathname;
-			return pathname !== '/' && !/^\/(?:en|ja)\/(?:blog|resume)(?:\/|$)/.test(pathname);
+			return pathname !== '/'
+				&& !/^\/(?:en|ja)\/resume(?:\/|$)/.test(pathname)
+				&& !/^\/ja\/blog(?:\/|$)/.test(pathname);
 		},
 	})],
 	i18n: {

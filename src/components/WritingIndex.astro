@@ -1,5 +1,6 @@
 ---
 import { getCopy, type Locale } from '../data/site';
+import { formatBlogDate, getPublicPosts } from '../lib/blog';
 import Layout from '../layouts/Layout.astro';
 import { localizedUrl } from '../lib/urls';
 
@@ -9,21 +10,38 @@ interface Props {
 
 const { locale } = Astro.props;
 const copy = getCopy(locale);
+const posts = await getPublicPosts(locale);
 ---
 
-<Layout title={copy.writing.metaTitle} description={copy.writing.metaDescription} pagePath="blog" noindex>
+<Layout title={copy.writing.metaTitle} description={copy.writing.metaDescription} pagePath="blog" noindex={posts.length === 0}>
 	<main class="writing-page page-shell">
 		<header class="page-intro">
 			<h1>{copy.writing.title}</h1>
 		</header>
 
-		<section class="empty-state" aria-labelledby="empty-title">
-			<p class="eyebrow">{copy.writing.emptyTitle}</p>
-			<h2 id="empty-title">{copy.writing.emptyText}</h2>
-			<a class="button-link button-link--quiet" href={localizedUrl(locale, 'projects')} data-astro-prefetch>
-				{copy.actions.exploreProjects} <span aria-hidden="true">→</span>
-			</a>
-		</section>
+		{posts.length > 0 ? (
+			<section class="writing-list" aria-label={copy.writing.title}>
+				{posts.map((post) => (
+					<article class="writing-card">
+						<p class="writing-card__date">
+							<time datetime={post.data.date.toISOString().slice(0, 10)}>{formatBlogDate(post.data.date, locale)}</time>
+						</p>
+						<h2>
+							<a href={localizedUrl(locale, 'blog/' + post.data.slug)} data-astro-prefetch>{post.data.title}</a>
+						</h2>
+						<p>{post.data.description}</p>
+					</article>
+				))}
+			</section>
+		) : (
+			<section class="empty-state" aria-labelledby="empty-title">
+				<p class="eyebrow">{copy.writing.emptyTitle}</p>
+				<h2 id="empty-title">{copy.writing.emptyText}</h2>
+				<a class="button-link button-link--quiet" href={localizedUrl(locale, 'projects')} data-astro-prefetch>
+					{copy.actions.exploreProjects} <span aria-hidden="true">→</span>
+				</a>
+			</section>
+		)}
 	</main>
 
 	<style>
@@ -43,15 +61,53 @@ const copy = getCopy(locale);
 			line-height: 0.98;
 		}
 
-	.empty-state {
-		max-width: 48rem;
-	}
+		.writing-list {
+			max-width: 48rem;
+			border-top: 1px solid var(--color-border);
+		}
 
-	.empty-state {
-		padding: 3rem 0;
-		border-top: 1px solid var(--color-border);
-		border-bottom: 1px solid var(--color-border);
-	}
+		.writing-card {
+			padding: 2rem 0;
+			border-bottom: 1px solid var(--color-border);
+		}
+
+		.writing-card__date {
+			margin: 0;
+			color: var(--color-muted);
+			font-size: 0.8rem;
+			font-weight: 700;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.writing-card h2 {
+			margin: 0.75rem 0 0.5rem;
+			font-size: clamp(1.5rem, 2.7vw, 2.15rem);
+			letter-spacing: -0.04em;
+			line-height: 1.1;
+		}
+
+		.writing-card h2 a {
+			text-decoration: none;
+		}
+
+		.writing-card h2 a:hover,
+		.writing-card h2 a:focus-visible {
+			color: var(--color-accent);
+		}
+
+		.writing-card > p:last-child {
+			max-width: 42rem;
+			margin: 0;
+			color: var(--color-muted);
+		}
+
+		.empty-state {
+			max-width: 48rem;
+			padding: 3rem 0;
+			border-top: 1px solid var(--color-border);
+			border-bottom: 1px solid var(--color-border);
+		}
 
 		.empty-state h2 {
 			max-width: 32rem;

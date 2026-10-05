@@ -1,0 +1,38 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BlogPost from '../../../components/BlogPost.astro';
+import { getPublicBlogEntries } from '../../../lib/blog';
+
+const locale = 'ja' as const;
+
+export async function getStaticPaths() {
+	const locale = 'ja' as const;
+	const entries = await getPublicBlogEntries();
+	const slugs = [...new Set(entries.map((entry) => entry.data.slug))];
+
+	return slugs.map((slug) => ({
+		params: { postSlug: slug },
+		props: {
+			slug,
+			post: entries.find((entry) => entry.data.locale === locale && entry.data.slug === slug),
+			fallbackPost: entries.find((entry) => entry.data.locale === 'en' && entry.data.slug === slug),
+		},
+	}));
+}
+
+const { slug, post, fallbackPost } = Astro.props as {
+	slug: string;
+	post?: CollectionEntry<'blog'>;
+	fallbackPost?: CollectionEntry<'blog'>;
+};
+const content = post ? await render(post) : undefined;
+const Content = content?.Content;
+---
+
+{Content ? (
+	<BlogPost locale={locale} slug={slug} post={post} fallbackPost={fallbackPost}>
+		<Content />
+	</BlogPost>
+) : (
+	<BlogPost locale={locale} slug={slug} fallbackPost={fallbackPost} />
+)}

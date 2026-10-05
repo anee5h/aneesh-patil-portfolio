@@ -12,7 +12,7 @@ const projectsUrl = localizedUrl(locale, 'projects');
 const blogUrl = localizedUrl(locale, 'blog');
 const aboutUrl = localizedUrl(locale, 'about');
 const isProjectsPath = currentPath === 'projects' || currentPath.startsWith('projects/');
-const isBlogPath = currentPath === 'blog';
+const isBlogPath = currentPath === 'blog' || currentPath.startsWith('blog/');
 const alternateLocale = locale === 'en' ? 'ja' : 'en';
 const alternateUrl = alternateLocalePath(Astro.url.pathname, alternateLocale);
 const displayName = locale === 'ja' ? 'パティルアニシュ' : 'aneesh patil';
