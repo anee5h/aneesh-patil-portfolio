@@ -1,5 +1,5 @@
 ---
-title: I finally rebuilt my portfolio
+title: I finally rebuilt my personal site
 description: Some notes on rebuilding my personal site, the choices I made, and the small details that took longer than expected.
 slug: i-finally-rebuilt-my-portfolio
 locale: en
