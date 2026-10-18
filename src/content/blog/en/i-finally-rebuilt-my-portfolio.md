@@ -1,7 +1,7 @@
 ---
 title: I finally rebuilt my personal site
 description: Notes on rebuilding my personal site and the details that took longer than expected.
-slug: i-finally-rebuilt-my-portfolio
+translationKey: i-finally-rebuilt-my-portfolio
 locale: en
 date: 2026-10-06
 published: true

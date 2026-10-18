@@ -8,14 +8,14 @@ const locale = 'ja' as const;
 export async function getStaticPaths() {
 	const locale = 'ja' as const;
 	const entries = await getPublicBlogEntries();
-	const slugs = [...new Set(entries.map((entry) => entry.data.slug))];
+	const slugs = [...new Set(entries.map((entry) => entry.data.translationKey))];
 
 	return slugs.map((slug) => ({
 		params: { postSlug: slug },
 		props: {
 			slug,
-			post: entries.find((entry) => entry.data.locale === locale && entry.data.slug === slug),
-			fallbackPost: entries.find((entry) => entry.data.locale === 'en' && entry.data.slug === slug),
+			post: entries.find((entry) => entry.data.locale === locale && entry.data.translationKey === slug),
+			fallbackPost: entries.find((entry) => entry.data.locale === 'en' && entry.data.translationKey === slug),
 		},
 	}));
 }

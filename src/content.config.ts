@@ -41,7 +41,7 @@ const blog = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    translationKey: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     locale: z.enum(['en', 'ja']),
     date: z.coerce.date(),
     published: z.boolean().default(false),

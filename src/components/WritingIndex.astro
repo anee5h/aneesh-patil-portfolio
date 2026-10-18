@@ -27,7 +27,7 @@ const posts = await getPublicPosts(locale);
 							<time datetime={post.data.date.toISOString().slice(0, 10)}>{formatBlogDate(post.data.date, locale)}</time>
 						</p>
 						<h2>
-							<a href={localizedUrl(locale, 'blog/' + post.data.slug)} data-astro-prefetch>{post.data.title}</a>
+							<a href={localizedUrl(locale, 'blog/' + post.data.translationKey)} data-astro-prefetch>{post.data.title}</a>
 						</h2>
 						<p>{post.data.description}</p>
 					</article>

@@ -7,7 +7,7 @@ function comparePosts(left: BlogEntry, right: BlogEntry) {
 	const dateOrder = right.data.date.getTime() - left.data.date.getTime();
 	if (dateOrder !== 0) return dateOrder;
 
-	return left.data.slug.localeCompare(right.data.slug);
+	return left.data.translationKey.localeCompare(right.data.translationKey);
 }
 
 export function getPublicPosts(locale: Locale) {

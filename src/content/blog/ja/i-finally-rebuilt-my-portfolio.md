@@ -1,7 +1,7 @@
 ---
 title: 個人サイトをやっと作り直した
 description: 個人サイトを作り直したときに考えたことや、選んだ技術、思ったより時間がかかった細かな部分について。
-slug: i-finally-rebuilt-my-portfolio
+translationKey: i-finally-rebuilt-my-portfolio
 locale: ja
 date: 2026-10-06
 published: true
