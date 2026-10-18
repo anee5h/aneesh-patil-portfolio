@@ -1,44 +1,36 @@
 ---
 title: I finally rebuilt my personal site
-description: Some notes on rebuilding my personal site, the choices I made, and the small details that took longer than expected.
+description: Notes on rebuilding my personal site and the details that took longer than expected.
 slug: i-finally-rebuilt-my-portfolio
 locale: en
 date: 2026-10-06
 published: true
 ---
 
-There was an older version, but it was pretty minimal. It just had the bare bone information and links then sat like that for longer than I'd planned. I have been meaning to remake it better for a long time. Then I'd stop and think about fonts, layout, what I wanted it to say then leave it be.
+I had an older version of my site, but it was minimal: a few basic details and links. I left it that way longer than I meant to. I kept thinking about rebuilding it, then getting stuck on the fonts, layout, and what I wanted it to say.
 
-Finally I grew tired of having a site that was real, but not revealing anything about me. I didn't want another developer CV with skills and four to six profile cards that could have been anyone's. I wanted it to be a little quieter and personal. It had to show what I do, and how I do it.
+Eventually, I got tired of having a site that existed but didn't reveal much about me. I didn't want another developer CV with a skills list and generic profile cards that could belong to anyone. I wanted something quieter and more personal, a site that showed what I do and how I do it.
 
-I spent a while browsing the developer portfolios that everyone was sharing on tech twitter and on github. A lot of them were really good, but I knew that I didn't want any gimmicky animations or an overly creative portfolio. I wanted to strike the right balance where the site felt intentional, but not showy.
+I spent time looking through portfolios people shared on tech Twitter and GitHub. Many were great, but I didn't want gimmicky animations or an overly creative design. I wanted the site to feel intentional without being showy.
 
-I began with Astro. Since the bulk of the site is content and static pages, I wasn't required to implement a client-side app within the portfolio itself. Astro provides me with pages and components, content collections for my projects and posts, and I only need client-side JavaScript sparingly; I also use its view transitions, so the navigation doesn't look much like a series of discrete pages.
+I chose Astro because most of the site is static content, so it didn't need a client-side app. Astro gives me pages, components, and content collections for projects and posts. I use JavaScript only where it's needed, and View Transitions make navigation feel less like moving between separate pages. I like that the structure is easy to understand: pages are regular Astro components, content lives in Markdown or small data files, and the URLs make sense. If I come back later, I can make changes without relearning a complicated system.
 
-I appreciate that this project is straightforward to get into and grasp. The pages are all normal Astro parts, the content is contained in Markdown or information modules, and the URL makes sense. If I return to it later, I shouldn't have to keep in mind a fancy mechanism before I can alter a web page.
+I skipped Tailwind because the design was small enough for basic CSS. I set the colors, content widths, spacing, breakpoints, responsive rules, and component styles myself. It took longer than I expected, but it made me think through those choices instead of reaching for utility classes.
 
-I intentionally skipped Tailwind. The design was small enough to require basic CSS. I have a handful of color variables, content widths, spacing, breakpoints, responsive rules, and component styles. It also made me think through what the spacing, colors, and breakpoints should be, instead of defaulting to utilities, which took longer than I anticipated.
+I changed the design more often than the code. I started with a lot of gold and beige, but after a few days they felt like too much. I scaled them back, and the result came closer to the quieter look I wanted.
 
-I ended up changing the design more times than I did the code. Originally I had way more gold and beige from the start, but after staring at it for a couple of days I began to dislike that there was so much repetition in the website, so I brought it down a bit. The end result is a more subtle website, more in line with what I wanted.
+Fonts took ages, maybe embarrassingly long. I found Cal Sans while scrolling Twitter and used it for the English pages. The Japanese pages use Noto Sans JP.
 
-Fonts took ages and were pretty embarrassing. I came across Cal Sans while scrolling on Twitter. I loved it and I used for the English pages. For Japanese I used Noto Sans JP. 
+I wanted both languages from the start, rather than adding Japanese later. The routes and copy are separate, and each project has an English and Japanese version. English and Japanese don't look equally dense at the same font size; line breaks, title sizes, line height, and content width all affect the balance. I kept adjusting those until both versions felt like the same site. Writing the Japanese copy also showed me issues I'd missed in English, especially title wrapping, spacing, and how much text fits on a page.
 
-The point size is the same but it doesn't quite feel as dense in English and Japanese, and line breaks on both texts really help and break the balance quickly. 
+Light and dark mode took more time too. Changing colors was easy; getting borders, muted text, accents, buttons, and the theme toggle to work together took longer. I also fixed a few details in Safari. The mobile header looked cramped more than once when I checked it on my phone.
 
-I kept playing with title sizes, line heights and max width until the two version felt like the same layout with different texts pasted into it.
+I added PWA support because I like being able to install websites I return to. There wasn't a strong product reason for it; I wanted that feature on my own site.
 
-Right from the start I knew I wanted both English and Japanese, and I didn't want to construct the entire site in English and tack on Japanese content later. The routes are independent, the copy is independent, and each project entry contains both an English and Japanese edition. The Japanese text raised issues - such as title wrapping, appropriate spacing and quantity of text on a page - that I hadn't seen in the English.
+The project pages needed their own adjustments. I kept the reading width narrow and made a mobile version of the architecture diagram instead of shrinking the desktop one. Install behavior, résumé links, language switching, and theme controls all had to work within the same site.
 
-Same with light and dark mode: more work than I thought. The dark and light colors are easy, changing the borders and muted text, accents, buttons, and theme toggle to work nicely as a complete whole takes a little longer. Safari and theme behavior gave me a handful of minor details to try and get right, and I kept thinking the mobile header was done, then opening my phone and seeing something cramped.
+The site is still changing, and Meguruto is still in development. I keep adjusting spacing and wording. I'll probably remove some things, and I may add things that seem useful now but feel unnecessary a few months later. That's part of having a personal site.
 
-I love PWAs, and I’ve made this site a PWA as well. There is no strong product justification for this. I love the idea of being able to install websites I come back to regularly, and as this is my personal site, I figured I might as well make it work as a PWA as well.
+I added the blog for the same reason. I want to write about what I'm making, experiments I'm trying, and technical details that need more room than a project card. I don't want to wait until I have everything figured out. I'll write as I work, including about non-technical things that catch my interest.
 
-Even in the project pages had there initial hiccups. They have a small reading width, less than the dimensions of the biggest screen we know – that of our heads. We needed an up-to-date mobile version of the architecture diagram, not a smaller picture of the empty desktop design. The installable behaviour, rsum links, switch to language, and toggle theme had to live in the same framework.
-
-The site is still evolving Meguruto is not finished, and I still find myself wanting to tweak the spacing, change the wording here and there. I'll probably delete a few things. I'll probably add things that seem like a good idea now but are unnecessary a few months down the road. That's normal for a personal site.
-
-That's also the reason I added this blog. I want this to be a place of notes about things I make, experiments I try and technicalities that are better explained in a few paragraphs than on a project card. I don't want to hold off until I have the perfect picture in my head.
-
-I will probably just keep switching the site. I can write about things as I am making them, instead of waiting for me to have a complete feeling. I also want to write about the things I build, the technologies I try, and the non-technical topics that catches my interest.
-
-So this is post number one.
+So this is my first post.
